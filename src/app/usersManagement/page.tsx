@@ -1,3 +1,18 @@
+"use client";
+
+import ProtectedRoute from "@/component/ProtectedRoute";
+import PageHeader from "@/component/PageHeader";
+import { useRouter } from "next/navigation";
+
+
 export default function UsersManagement() {
-  return <div className="p-6 text-2xl font-bold">This is the usersManagement</div>;
+  const router = useRouter();
+
+  return (
+    <ProtectedRoute>
+      <div className="w-full">
+        <PageHeader title="Users Management" showFilter onFilterClick={() => alert('filter clicked!')} />
+      </div>
+    </ProtectedRoute>
+  );
 }

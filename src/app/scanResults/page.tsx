@@ -1,3 +1,20 @@
+"use client";
+
+import ProtectedRoute from "@/component/ProtectedRoute";
+import PageHeader from "@/component/PageHeader";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
+
 export default function ScanResults() {
-    return <div className="text-2xl font-bold ">This is the ScanResults</div>;
-  }
+    const router = useRouter();
+    const { logout } = useAuth();
+
+    return (
+        <ProtectedRoute>
+            <div className="w-full">
+                <PageHeader title="Scans" showFilter onFilterClick={() => alert('filter clicked!')} />
+            </div>
+        </ProtectedRoute>
+    );
+}

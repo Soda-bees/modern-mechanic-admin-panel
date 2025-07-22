@@ -11,8 +11,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-headerBG: #F4F6F8;
-  --color-grey: #686868
-  
+  --color-grey: #686868;
+  --color-orange: #F96D37;
+  --color-lightOrange: #FFEDE6;
 }
 
 @theme {

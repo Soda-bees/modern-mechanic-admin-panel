@@ -10,7 +10,7 @@ const Button: React.FC<ButtonPropsType> = ({ title, activeIcon, inactiveIcon, cu
     const pathname = usePathname();
     const isActive = pathname === currentPath;
     return (
-        <Link href={currentPath} className={isActive ? 'flex flex-row items-center justify-center bg-[#FFEDE6] px-4 py-3 rounded-lg' :
+        <Link href={currentPath} className={isActive ? 'flex flex-row items-center justify-center bg-lightOrange px-4 py-3 rounded-lg' :
             'flex flex-row items-center justify-center px-4 py-3 rounded-lg'}>
             <AnimatePresence mode="popLayout">
                 <motion.div
@@ -24,8 +24,7 @@ const Button: React.FC<ButtonPropsType> = ({ title, activeIcon, inactiveIcon, cu
                     <img alt={title} src={isActive ? activeIcon : inactiveIcon} className='h-5 object-contain' />
                 </motion.div>
             </AnimatePresence>
-            {/* <img alt={title} src={isActive ? activeIcon : inactiveIcon} /> */}
-            <span className={isActive ? 'text-lg  text-[#F96D37]' : 'text-lg  text-grey'}>{title}</span>
+            <span className={isActive ? 'text-lg  text-orange' : 'text-lg  text-grey'}>{title}</span>
         </Link>
     );
 };
