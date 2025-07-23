@@ -4,8 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import images from '@/services/images';
-import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useSearch } from '@/context/SearchContext';
+import { motion } from 'framer-motion';
 
 const Header = () => {
     const pathname = usePathname();
@@ -22,8 +23,8 @@ const Header = () => {
                     <h4 className='font-bold'>John Doe</h4>
                 </div>
             </div>
-            <div className='w-[80%] md:w-[65%] lg:w-[60%] xl:w-[50%] sm:flex flex-row items-center justify-between hidden'>
-                <div className='flex flex-row items-center w-[75%] rounded-lg bg-white p-2 shadow-xs '>
+            <div className='w-[80%] md:w-[85%] lg:w-[65%] xl:w-[55%] sm:flex flex-row items-center justify-between hidden '>
+                <div className='flex flex-row items-center w-[60%] rounded-lg bg-white p-2 shadow-xs '>
                     <MagnifyingGlassIcon className='w-5 h-5 mr-1 text-grey' />
                     <input
                         className='focus:outline-none text-grey p-1 font-medium w-full'
@@ -31,8 +32,18 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row items-center'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
-                    <h4 className='font-bold'>John Doe</h4>
+                    <h4 className='font-bold mr-6'>John Doe</h4>
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.95 }}
+                        className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
+                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer" />
+                        <span className='text-white hidden md:flex'>
+                            Logout
+                        </span>
+                    </motion.button>
                 </div>
+
             </div>
             <div className='flex flex-row items-center w-full rounded-lg bg-white p-2 shadow-xs sm:hidden'>
                 <MagnifyingGlassIcon className='w-5 h-5 mr-1 text-grey' />
