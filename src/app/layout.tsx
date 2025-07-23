@@ -18,7 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <SearchProvider>
             <AuthLayout />
-            <div className='px-6 w-full mt-4'>
+            {/* <div className='px-6 w-full mt-4'> */}
+            <div >
               {children}
             </div>
           </SearchProvider>

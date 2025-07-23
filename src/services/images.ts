@@ -12,6 +12,9 @@ const images = {
     complainsActive: '/assets/images/complainsActive.png',
     workshopsActive: '/assets/images/workshopsActive.png',
     workshopsInActive: '/assets/images/workshopsInActive.png',
+    loginBG: '/assets/images/loginBG.png',
+    loader: '/assets/images/loader.png',
+    loader2: '/assets/images/loader2.png',
   };
   
   export default images;

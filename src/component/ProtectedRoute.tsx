@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Loading from './Loading';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token, loading } = useAuth();
@@ -15,7 +16,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }, [token, loading, router]);
 
   if (loading || !token) {
-    return <div className="text-center pt-20">Loading...</div>;
+    return <Loading />;
   }
 
   return <>{children}</>;
