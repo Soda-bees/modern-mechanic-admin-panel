@@ -1,21 +1,19 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type Props = {
-  onClose: () => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddWorkshopModal({ onClose }: Props) {
-  const router = useRouter()
+export default function AddWorkshopModal({ setIsOpen }: Props) {
   const [showModal, setShowModal] = useState(true)
 
   const handleClose = () => {
     setShowModal(false)
-    setTimeout(() => router.push('/workshops'), 100)
+    setTimeout(() => setIsOpen(false), 200)
   }
 
   return (
@@ -23,7 +21,7 @@ export default function AddWorkshopModal({ onClose }: Props) {
       {showModal && (
         <motion.div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-[999]"
-          onClick={onClose}
+          onClick={handleClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -39,14 +37,13 @@ export default function AddWorkshopModal({ onClose }: Props) {
             <div className='flex flex-row items-center justify-between'>
               <h2 className="text-xl font-semibold ">Add New Workshop</h2>
               <motion.button
-                onClick={onClose}
+                onClick={handleClose}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }} className='bg-orange cursor-pointer rounded-md'>
                 <XMarkIcon className="w-7 h-7 text-white" />
               </motion.button>
             </div>
             <p className="mb-4">Form goes here</p>
-
           </motion.div>
         </motion.div>
       )}

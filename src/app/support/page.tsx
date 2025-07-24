@@ -5,7 +5,7 @@ import PageHeader from "@/component/PageHeader";
 import { useRouter } from "next/navigation";
 
 
-export default function support() {
+export default function Support() {
     const router = useRouter();
 
     return (

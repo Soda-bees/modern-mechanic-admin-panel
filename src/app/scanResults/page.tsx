@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useSearch } from "@/context/SearchContext";
 
 type Scan = {
-  _id: number;
+  id: number;
   vehicle: string;
   dtcCode: string;
   issue: string;
@@ -29,7 +29,7 @@ export default function ScanResults() {
     const data: Scan[] = Array(24)
       .fill(null)
       .map((_, i) => ({
-        _id: i + 1,
+        id: i + 1,
         vehicle: "Bugatti Chiron 2027",
         dtcCode: "P0025",
         issue: "Exhaust Variable Camshaft Timing (Bank 2)",
@@ -61,7 +61,7 @@ export default function ScanResults() {
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredScans.map((scan) => (
               <div
-                key={scan._id}
+                key={scan.id}
                 className="border rounded-xl bg-white p-4 shadow-sm flex flex-col justify-between"
               >
                 <div className="flex items-start gap-2 mb-4">
@@ -121,7 +121,7 @@ export default function ScanResults() {
                     </p>
                   </div>
                   <Link
-                    href={`/scanResults/detail/${scan._id}`}
+                    href={`/scanResults/${scan.id}`}
                     className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100">
                     <div className="flex items-center sm:space-x-2">
                       <img

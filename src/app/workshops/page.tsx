@@ -2,22 +2,13 @@
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import Image from "next/image";
 import images from "@/services/images";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import AddWorkshopModal from "./add/page";
+import {  useState } from "react";
+import AddWorkshopModal from "@/component/AddWorkshopModal";
 
 
 export default function Workshops() {
-  const router = useRouter();
-  const pathname = usePathname()
-  const [visibleModal, setVisibleModal] = useState(false)
-
-  // useEffect(() => {
-  //   setShowModal(pathname === '/workshops/add')
-  // }, [pathname])
+  const [visibleModal, setVisibleModal] = useState<boolean>(false)
 
   const dummyWorkshops = Array(10).fill({
     name: "AutoFix Garage",
@@ -71,9 +62,8 @@ export default function Workshops() {
         </div>
 
       </div>
-      {/* <Link href="/workshops/add">Add Workshop</Link> */}
       {visibleModal && (
-        <AddWorkshopModal onClose={() => setVisibleModal(false)} />
+        <AddWorkshopModal setIsOpen={setVisibleModal} />
       )}
     </ProtectedRoute>
   );
