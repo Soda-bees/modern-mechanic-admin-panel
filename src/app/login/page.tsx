@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import images from '@/services/images';
 import SimpleButton from '@/component/simpleButton';
+import { handleLogin } from '@/services/api';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -57,6 +58,26 @@ const LoginPage = () => {
       login('authToken');
     }, 1500);
   };
+
+  const handleAdminLogin = async () => {
+    try {
+      setLoader(true)
+      const body = { email, password }
+      const response = await handleLogin(body) as { data: any }
+      console.log("res==>", response.data);
+      if (response.data.success) {
+        alert('login')
+      } else {
+        alert("Something went wrong. Please try again!")
+      }
+    } catch (error) {
+      console.log("error==>", error);
+      alert("Something went wrong. Please try again!")
+    } finally {
+      setLoader(false)
+    }
+  }
+
 
   return (
     <div className="relative w-screen h-screen overflow-hidden flex">
@@ -126,7 +147,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
+              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
             </div>
           </motion.div>
         )
@@ -158,7 +179,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
+              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
             </div>
           </motion.div>
         )
