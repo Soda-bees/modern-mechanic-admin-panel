@@ -17,6 +17,7 @@ const images = {
   loader2: '/assets/images/loader2.png',
   bugatti: "/assets/images/bugatti.png",
   document: "/assets/images/document.png",
+  workshopImage: "/assets/images/workshopImage.png",
 };
 
 export default images;
