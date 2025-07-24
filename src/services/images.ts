@@ -14,6 +14,7 @@ const images = {
   workshopsInActive: "/assets/images/workshopsInActive.png",
   bugatti: "/assets/images/bugatti.png",
   document: "/assets/images/document.png",
+  workshopImage: "/assets/images/workshopImage.png",
 };
 
 export default images;

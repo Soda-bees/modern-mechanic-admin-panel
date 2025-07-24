@@ -1,21 +1,39 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
-import { motion } from 'framer-motion';
-import HoverAnimation from './hoverAnimation';
+import { ReactNode } from "react";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import { motion } from "framer-motion";
+import HoverAnimation from "./hoverAnimation";
 
-const PageHeader = ({ title, showFilter = false, onFilterClick }: PageHeaderProps) => {
-    return (
-        <div className="flex items-center justify-between py-1 border-b border-grey w-full">
-            <h1 className="text-xl font-semibold">{title}</h1>
-            {showFilter && (
-                <HoverAnimation onClick={onFilterClick}>
-                    <AdjustmentsHorizontalIcon className='w-8 cursor-pointer' />
-                </HoverAnimation>
-            )}
-        </div>
-    );
+const PageHeader = ({
+  title,
+  showFilter = false,
+  onFilterClick,
+  addShowButton = false,
+  buttonTitle,
+  onAddShowClick,
+}: PageHeaderProps) => {
+  return (
+    <div className="flex items-center justify-between py-2 border-b border-grey w-full">
+      <div className="flex items-center">
+        <h1 className="text-xl font-semibold">{title}</h1>
+        {addShowButton && (
+          <button
+            className="text-white bg-orange rounded-2xl px-4 py-2 text-xs sm:text-sm hover:bg-headerBG hover:text-black transition font-semibold curson-pointer ml-4"
+            onClick={onAddShowClick}
+          >
+            {buttonTitle}
+          </button>
+        )}
+      </div>
+
+      {showFilter && (
+        <HoverAnimation onClick={onFilterClick}>
+          <AdjustmentsHorizontalIcon className="w-8 cursor-pointer" />
+        </HoverAnimation>
+      )}
+    </div>
+  );
 };
 
 export default PageHeader;
