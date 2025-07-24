@@ -6,11 +6,18 @@ import { ButtonPropsType } from '@/types/button';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Button: React.FC<ButtonPropsType> = ({ title, activeIcon, inactiveIcon, currentPath }) => {
+const Button: React.FC<ButtonPropsType> = ({ title, activeIcon, inactiveIcon, currentPath, href }) => {
     const pathname = usePathname();
-    const isActive = pathname === currentPath;
+    // const isActive = pathname === currentPath;
+    const isActive = currentPath.some(path => {
+        if (path === '/') {
+            return pathname === '/'; // Exact match for homepage
+        }
+        return pathname.startsWith(path);
+    });
+
     return (
-        <Link href={currentPath} className={isActive ? 'flex flex-row items-center justify-center bg-lightOrange px-4 py-3 rounded-lg' :
+        <Link href={href} className={isActive ? 'flex flex-row items-center justify-center bg-lightOrange px-4 py-3 rounded-lg' :
             'flex flex-row items-center justify-center px-4 py-3 rounded-lg'}>
             <AnimatePresence mode="popLayout">
                 <motion.div

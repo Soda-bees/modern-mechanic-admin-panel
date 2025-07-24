@@ -1,21 +1,3 @@
-// "use client";
-
-// import ProtectedRoute from "@/component/ProtectedRoute";
-// import PageHeader from "@/component/PageHeader";
-// import { useRouter } from "next/navigation";
-
-// export default function complaints() {
-//     const router = useRouter();
-
-//     return (
-//         <ProtectedRoute>
-//             <div className="w-full">
-//                 <PageHeader title="Complaints" showFilter onFilterClick={() => alert('filter clicked!')} />
-//             </div>
-//         </ProtectedRoute>
-//     );
-// }
-
 "use client";
 
 import ProtectedRoute from "@/component/ProtectedRoute";
@@ -24,25 +6,45 @@ import { useRouter } from "next/navigation";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function Complaints() {
   const router = useRouter();
 
-  const complaints = Array(4).fill({
-    name: "Emily Richardson",
-    email: "emilyrichardson@gmail.com",
-    phone: "+1234568799",
-    date: "July 17, 2025",
-    time: "16:45",
-    vehicle: "Bugatti Chiron 2027",
-    dtcCode: "P0025",
-    issue: "Exhaust Variable Camshaft Timing (Bank 2)",
-    urgency: "Soon",
-    difficulty: "Specialist",
-    cost: "From $1,500 to $15,000+",
-    message:
-      "I'm not satisfied with the scan results. The diagnostic indicated three issues with my engine, but my car was running perfectly fine before I brought it in. I’ve taken my vehicle to another mechanic who found no issues with the engine. I believe the scan results are incorrect and would like a refund for the diagnostic service.",
-  });
+  // const complaints = Array(4).fill({
+  //   name: "Emily Richardson",
+  //   email: "emilyrichardson@gmail.com",
+  //   phone: "+1234568799",
+  //   date: "July 17, 2025",
+  //   time: "16:45",
+  //   vehicle: "Bugatti Chiron 2027",
+  //   dtcCode: "P0025",
+  //   issue: "Exhaust Variable Camshaft Timing (Bank 2)",
+  //   urgency: "Soon",
+  //   difficulty: "Specialist",
+  //   cost: "From $1,500 to $15,000+",
+  //   message:
+  //     "I'm not satisfied with the scan results. The diagnostic indicated three issues with my engine, but my car was running perfectly fine before I brought it in. I’ve taken my vehicle to another mechanic who found no issues with the engine. I believe the scan results are incorrect and would like a refund for the diagnostic service.",
+  // });
+
+  const complaints = Array(10)
+    .fill(null)
+    .map((_, index) => ({
+      _id: `complaint-${index + 1}`, // You can use a more unique ID if needed
+      name: "Emily Richardson",
+      email: "emilyrichardson@gmail.com",
+      phone: "+1234568799",
+      date: "July 17, 2025",
+      time: "16:45",
+      vehicle: "Bugatti Chiron 2027",
+      dtcCode: "P0025",
+      issue: "Exhaust Variable Camshaft Timing (Bank 2)",
+      urgency: "Soon",
+      difficulty: "Specialist",
+      cost: "From $1,500 to $15,000+",
+      message:
+        "I'm not satisfied with the scan results. The diagnostic indicated three issues with my engine, but my car was running perfectly fine before I brought it in. I’ve taken my vehicle to another mechanic who found no issues with the engine. I believe the scan results are incorrect and would like a refund for the diagnostic service.",
+    }));
 
   return (
     <ProtectedRoute>
@@ -68,7 +70,9 @@ export default function Complaints() {
                     Submitted on {complaint.date} • {complaint.time}
                   </p>
                 </div>
-                <button className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100">
+                <Link
+                  href={`/complaints/detail/${complaint._id}`}
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer">
                   <div className="flex items-center sm:space-x-2">
                     <img
                       src={images.document}
@@ -79,7 +83,7 @@ export default function Complaints() {
                       View Full Details
                     </span>
                   </div>
-                </button>
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

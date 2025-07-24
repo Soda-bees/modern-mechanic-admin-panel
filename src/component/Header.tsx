@@ -7,10 +7,12 @@ import images from '@/services/images';
 import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useSearch } from '@/context/SearchContext';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 const Header = () => {
     const pathname = usePathname();
     const { search, setSearch } = useSearch();
+    const { logout } = useAuth();
 
     return (
         <header className="bg-headerBG flex flex-col sm:flex-row justify-between items-center px-4 py-4 sm:px-8 w-full">
@@ -21,6 +23,16 @@ const Header = () => {
                 <div className='flex flex-row items-center sm:hidden'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
                     <h4 className='font-bold'>John Doe</h4>
+                    <motion.button
+                        onClick={logout}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.95 }}
+                        className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg ml-6'>
+                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
+                        <span className='text-white hidden md:flex'>
+                            Logout
+                        </span>
+                    </motion.button>
                 </div>
             </div>
             <div className='w-[80%] md:w-[85%] lg:w-[65%] xl:w-[55%] sm:flex flex-row items-center justify-between hidden '>
@@ -34,10 +46,11 @@ const Header = () => {
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
                     <h4 className='font-bold mr-6'>John Doe</h4>
                     <motion.button
+                        onClick={logout}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.95 }}
                         className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
-                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer" />
+                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
                         <span className='text-white hidden md:flex'>
                             Logout
                         </span>
