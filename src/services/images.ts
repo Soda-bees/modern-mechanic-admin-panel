@@ -18,6 +18,12 @@ const images = {
   bugatti: "/assets/images/bugatti.png",
   document: "/assets/images/document.png",
   workshopImage: "/assets/images/workshopImage.png",
+  Users: "/assets/images/Users.png",
+  Complains: "/assets/images/Complains.png",
+  Workshops: "/assets/images/Workshops.png",
+  Scan: "/assets/images/Scan.png",
+  barChart: "/assets/images/barChart.png",
+  lineChart: "/assets/images/lineChart.png",
 };
 
 export default images;
