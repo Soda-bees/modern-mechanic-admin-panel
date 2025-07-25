@@ -2,7 +2,6 @@
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import { useRouter } from "next/navigation";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";

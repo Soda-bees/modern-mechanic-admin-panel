@@ -3,20 +3,23 @@
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import images from "@/services/images";
-import {  useState } from "react";
+import { useState } from "react";
 import AddWorkshopModal from "@/component/AddWorkshopModal";
-
+import Link from "next/link";
 
 export default function Workshops() {
-  const [visibleModal, setVisibleModal] = useState<boolean>(false)
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
-  const dummyWorkshops = Array(10).fill({
-    name: "AutoFix Garage",
-    website: "www.exampleworkshop.com",
-    email: "info@workshop.com",
-    zipcode: "90125",
-    logo: images.workshopImage,
-  });
+  const dummyWorkshops = Array(10)
+    .fill(null)
+    .map((_, index) => ({
+      id: `${index + 1}`,
+      name: "AutoFix Garage",
+      website: "www.exampleworkshop.com",
+      email: "info@workshop.com",
+      zipcode: "90125",
+      logo: images.workshopImage,
+    }));
 
   return (
     <ProtectedRoute>
@@ -27,7 +30,7 @@ export default function Workshops() {
           addShowButton
           buttonTitle="+ Add Workshop"
           onAddShowClick={() => setVisibleModal(true)}
-        // onFilterClick={() => alert("filter clicked!")}
+          // onFilterClick={() => alert("filter clicked!")}
         />
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-6">
           {dummyWorkshops.map((shop, index) => (
@@ -54,18 +57,16 @@ export default function Workshops() {
               <p className="text-xs sm:text-sm text-black mb-3 font-semibold truncate">
                 <span className="font-medium">Zipcode:</span> {shop.zipcode}
               </p>
-              <button className="text-black bg-white rounded-xl w-full py-3 text-xs sm:text-sm hover:bg-headerBG transition font-semibold">
-                Shop Details
-              </button>
+              <Link href={`/workshops/${shop.id}`}>
+                <p className="text-black bg-white rounded-xl w-full py-3 text-xs sm:text-sm hover:bg-headerBG transition font-semibold flex justify-center">
+                  Shop Details
+                </p>
+              </Link>
             </div>
           ))}
         </div>
-
       </div>
-      {visibleModal && (
-        <AddWorkshopModal setIsOpen={setVisibleModal} />
-      )}
+      {visibleModal && <AddWorkshopModal setIsOpen={setVisibleModal} />}
     </ProtectedRoute>
   );
 }
-

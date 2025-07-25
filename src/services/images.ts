@@ -24,6 +24,7 @@ const images = {
   Scan: "/assets/images/Scan.png",
   barChart: "/assets/images/barChart.png",
   lineChart: "/assets/images/lineChart.png",
+  carImage: "/assets/images/carImage.png",
 };
 
 export default images;
