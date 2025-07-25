@@ -7,6 +7,7 @@ import { DocumentIcon } from "@heroicons/react/24/outline";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Complaints() {
   const router = useRouter();
@@ -58,10 +59,12 @@ export default function Complaints() {
                   href={`/complaints/${complaint._id}`}
                   className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer">
                   <div className="flex items-center sm:space-x-2">
-                    <img
+                    <Image
                       src={images.document}
                       alt="Car Logo"
                       className="h-4 w-4 object-contain"
+                      width={10}
+                      height={10}
                     />
                     <span className="hidden sm:flex text-xs sm:text-base font-medium text-black ">
                       View Full Details
@@ -95,10 +98,12 @@ export default function Complaints() {
                 <div className="space-y-1">
                   <h4 className="text-sm font-medium text-gray-600 flex items-center gap-2">
                     <span className="bg-lightOrange text-orange-600 p-2 rounded-full">
-                      <img
+                      <Image
                         src={images.bugatti}
                         alt="Car Logo"
                         className="h-3 w-3 object-contain"
+                        height={10}
+                        width={10}
                       />
                     </span>{" "}
                     Scan Vehicle Info:

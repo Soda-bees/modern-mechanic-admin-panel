@@ -73,7 +73,7 @@ export default function ScanResults() {
                     />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Vehicle</p>
+                    <p className="text-xs text-black">Vehicle</p>
                     <h2 className="text-sm font-semibold text-black">
                       {scan.vehicle}
                     </h2>

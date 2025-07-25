@@ -83,7 +83,7 @@ export default function Overview() {
                     className="object-contain"
                   />
                 </div>
-                <h2 className="text-2xl lg:text-3xl font-semibold">{item.value}</h2>
+                <h2 className="text-2xl lg:text-3xl font-semibold text-black">{item.value}</h2>
               </div>
               <p className="text-lg sm:text-xl font-medium text-black font-semibold">
                 {item.title}
@@ -93,9 +93,7 @@ export default function Overview() {
           ))}
         </div>
 
-        {/* Charts Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          {/* Bar Chart */}
           <div className="bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
@@ -105,7 +103,7 @@ export default function Overview() {
                 </h3>
               </div>
               <div className="relative inline-block w-fit">
-                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey">
+                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
                   <option>Daily</option>
                   <option>Weekly</option>
                 </select>
@@ -125,7 +123,6 @@ export default function Overview() {
             </div>
           </div>
 
-          {/* Line Chart */}
           <div className="bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
@@ -134,8 +131,8 @@ export default function Overview() {
                   2,340
                 </h3>
               </div>
-              <div className="relative inline-block w-fit">
-                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey">
+              <div className="relative inline-block w-fit ">
+                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
                   <option>Monthly</option>
                   <option>Quarterly</option>
                 </select>
