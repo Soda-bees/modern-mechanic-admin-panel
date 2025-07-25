@@ -16,7 +16,7 @@ const PageHeader = ({
   return (
     <div className="flex items-center justify-between py-2 border-b border-grey w-full">
       <div className="flex items-center">
-        <h1 className="text-xl font-semibold">{title}</h1>
+        <h1 className="text-xl font-semibold text-black">{title}</h1>
         {addShowButton && (
           <motion.button
             onClick={onAddShowClick}
@@ -31,7 +31,7 @@ const PageHeader = ({
 
       {showFilter && (
         <HoverAnimation onClick={onFilterClick}>
-          <AdjustmentsHorizontalIcon className="w-8 cursor-pointer" />
+          <AdjustmentsHorizontalIcon className="w-8 cursor-pointer text-black" />
         </HoverAnimation>
       )}
     </div>

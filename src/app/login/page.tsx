@@ -170,8 +170,8 @@ const LoginPage = () => {
               <div className='text-3xl font-bold text-black text-center'>Welcome back</div>
               <div className='text-xl font-medium text-black text-center'>Drive smarter. Diagnose faster.</div>
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
+              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
+              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
               <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
             </div>
           </motion.div>
@@ -209,8 +209,8 @@ const LoginPage = () => {
               <div className='text-3xl font-bold text-black text-center'>Welcome back</div>
               <div className='text-xl font-medium text-black text-center'>Drive smarter. Diagnose faster.</div>
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
+              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
+              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
               <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
             </div>
           </motion.div>

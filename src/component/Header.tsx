@@ -22,7 +22,7 @@ const Header = () => {
                 </Link>
                 <div className='flex flex-row items-center sm:hidden'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
-                    <h4 className='font-bold'>John Doe</h4>
+                    <h4 className='font-bold text-black'>John Doe</h4>
                     <motion.button
                         onClick={logout}
                         whileHover={{ scale: 1.02 }}
@@ -44,7 +44,7 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row items-center'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
-                    <h4 className='font-bold mr-6'>John Doe</h4>
+                    <h4 className='font-bold mr-6 text-black'>John Doe</h4>
                     <motion.button
                         onClick={logout}
                         whileHover={{ scale: 1.02 }}

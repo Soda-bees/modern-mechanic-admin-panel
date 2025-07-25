@@ -23,7 +23,7 @@
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 
-const dummyMessages = new Array(12).fill({
+const dummyMessages = new Array(8).fill({
   date: "July 17, 2025",
   name: "Emily Richardson",
   email: "emilyrichardson@gmail.com",
