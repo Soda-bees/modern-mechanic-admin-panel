@@ -1,38 +1,12 @@
-// "use client";
-
-// import ProtectedRoute from "@/component/ProtectedRoute";
-// import PageHeader from "@/component/PageHeader";
-// import { useAuth } from "@/context/AuthContext";
-// import Image from "next/image";
-// import { useRouter } from "next/navigation";
-
-// export default function Overview() {
-//   const router = useRouter();
-//   const { logout } = useAuth();
-
-//   return (
-//     <ProtectedRoute>
-//       <div className="w-full">
-//         <PageHeader
-//           title="Overview"
-//           showFilter={false}
-//           onFilterClick={() => alert("filter clicked!")}
-//         />
-//       </div>
-//     </ProtectedRoute>
-//   );
-// }
-
 "use client";
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import images from "@/services/images";
+import { customImageLoader } from "@/lib/imageLoader";
 
 export default function Overview() {
-  const { logout } = useAuth();
 
   const summaryCards = [
     {
@@ -76,6 +50,7 @@ export default function Overview() {
               <div className="flex flex-row justify-between items-center">
                 <div className="w-10 h-10 relative bg-lightOrange rounded-full flex items-center justify-center">
                   <Image
+                    loader={customImageLoader}
                     src={item.icon}
                     alt={item.title}
                     width={20}
@@ -116,6 +91,8 @@ export default function Overview() {
             </div>
             <div className="flex items-center justify-center overflow-x-auto">
               <Image
+                    loader={customImageLoader}
+
                 src={images.barChart}
                 width={800}
                 height={100}
@@ -146,6 +123,8 @@ export default function Overview() {
             </div>
             <div className="flex items-center justify-center overflow-x-auto">
               <Image
+                    loader={customImageLoader}
+
                 src={images.lineChart}
                 width={800}
                 height={100}

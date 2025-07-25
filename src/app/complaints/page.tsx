@@ -3,18 +3,18 @@
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import { useRouter } from "next/navigation";
-import { DocumentIcon } from "@heroicons/react/24/outline";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
+import { customImageLoader } from "@/lib/imageLoader";
 
 export default function Complaints() {
-  const router = useRouter();
 
   const complaints = Array(10)
     .fill(null)
     .map((_, index) => ({
-      _id: `complaint-${index + 1}`, // You can use a more unique ID if needed
+      _id: `${index + 1}`, // You can use a more unique ID if needed
       name: "Emily Richardson",
       email: "emilyrichardson@gmail.com",
       phone: "+1234568799",
@@ -58,10 +58,13 @@ export default function Complaints() {
                   href={`/complaints/${complaint._id}`}
                   className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer">
                   <div className="flex items-center sm:space-x-2">
-                    <img
+                    <Image
+                      loader={customImageLoader}
                       src={images.document}
-                      alt="Car Logo"
-                      className="h-4 w-4 object-contain"
+                      alt={'Document Logo'}
+                      width={15}
+                      height={15}
+                      className="object-contain"
                     />
                     <span className="hidden sm:flex text-xs sm:text-base font-medium text-black ">
                       View Full Details
@@ -95,10 +98,13 @@ export default function Complaints() {
                 <div className="space-y-1">
                   <h4 className="text-sm font-medium text-gray-600 flex items-center gap-2">
                     <span className="bg-lightOrange text-orange-600 p-2 rounded-full">
-                      <img
+                      <Image
+                        loader={customImageLoader}
                         src={images.bugatti}
-                        alt="Car Logo"
-                        className="h-3 w-3 object-contain"
+                        alt={'Car Logo'}
+                        width={13}
+                        height={13}
+                        className="object-contain"
                       />
                     </span>{" "}
                     Scan Vehicle Info:

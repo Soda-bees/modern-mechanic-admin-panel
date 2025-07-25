@@ -7,6 +7,20 @@ import { useAuth } from '@/context/AuthContext';
 import images from '@/services/images';
 import SimpleButton from '@/component/simpleButton';
 import { handleLogin } from '@/services/api';
+import Image from 'next/image';
+import { customImageLoader } from '@/lib/imageLoader';
+
+type LoginResponse = {
+  data: {
+    message: string;
+    token: string;
+    adminData: {
+      email: string;
+    };
+    success: boolean;
+  };
+};
+
 
 const LoginPage = () => {
   const router = useRouter();
@@ -63,7 +77,7 @@ const LoginPage = () => {
     try {
       setLoader(true)
       const body = { email, password }
-      const response = await handleLogin(body) as { data: any }
+      const response = await handleLogin(body) as LoginResponse
       console.log("res==>", response.data);
       if (response.data.success) {
         alert('login')
@@ -91,10 +105,12 @@ const LoginPage = () => {
               transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0 z-10"
             >
-              <img
+              <Image
+                loader={customImageLoader}
                 src={images.loginBG}
-                alt="login"
-                className="w-full h-full object-cover"
+                alt={'Car Logo'}
+                fill
+                className="object-cover"
               />
             </motion.div>
           )}
@@ -110,12 +126,14 @@ const LoginPage = () => {
                 : { width: '50%', left: '50%' }
           }
           transition={{ duration: 2, ease: 'backOut' }}
-          className="absolute top-0 h-full z-10 p-1"
+          className="absolute top-0 h-full z-10 p-4"
         >
-          <img
+          <Image
+            loader={customImageLoader}
             src={images.loginBG}
-            alt="login"
-            className="w-full h-full object-cover rounded-md"
+            alt={'Car Logo'}
+            fill
+            className="object-cover p-1 rounded-xl"
           />
         </motion.div>}
 
@@ -136,7 +154,14 @@ const LoginPage = () => {
                 ease: "easeOut",
               }}
               className='pt-3 ml-3'>
-              <img src={images.logo} className='w-12 sm:w-18 h-12 sm:h-18 mb-2 sm:mb-0' />
+              <Image
+                loader={customImageLoader}
+                src={images.logo}
+                alt={'Logo'}
+                width={55}
+                height={55}
+                className=""
+              />
             </motion.div>
             <div className='w-full px-4 mx-auto my-auto mx-auto sm:w-[80%] md:w-[60%]'>
               <div className='text-3xl text-center'>
@@ -147,7 +172,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
+              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
             </div>
           </motion.div>
         )
@@ -168,7 +193,14 @@ const LoginPage = () => {
                 ease: "easeOut",
               }}
               className='pt-3 ml-3'>
-              <img src={images.logo} className='w-12 sm:w-18 h-12 sm:h-18 mb-2 sm:mb-0' />
+              <Image
+                loader={customImageLoader}
+                src={images.logo}
+                alt={'Logo'}
+                width={75}
+                height={75}
+                className=""
+              />
             </motion.div>
             <div className='w-[90%] xl:w-[70%] 2xl:w-[50%] self-center my-auto'>
               <div className='text-3xl text-center'>
@@ -179,7 +211,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
+              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
             </div>
           </motion.div>
         )

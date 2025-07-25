@@ -2,7 +2,6 @@
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import images from "@/services/images";
 import Link from "next/link";
@@ -21,7 +20,6 @@ type Scan = {
 };
 
 export default function ScanResults() {
-  const { logout } = useAuth();
   const { search } = useSearch()
   const [scans, setScans] = useState<Scan[]>([]);
 
