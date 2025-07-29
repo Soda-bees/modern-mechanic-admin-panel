@@ -91,13 +91,13 @@ export default async function SingleComplaint({
 
         <div className="max-w-2xl">
           <h2 className="text-base text-black mb-1">Complaint Message:</h2>
-          <div className="bg-headerBG p-4 rounded-lg text-sm leading-relaxed text-black font-semibold">
-            I'm not satisfied with the scan results. The diagnostic indicated
+          <p className="bg-headerBG p-4 rounded-lg text-sm leading-relaxed text-black font-semibold">
+            I am not satisfied with the scan results. The diagnostic indicated
             three issues with my engine, but my car was running perfectly fine
-            before I brought it in. I've taken my vehicle to another mechanic
+            before I brought it in. I have taken my vehicle to another mechanic
             who found no issues with the engine. I believe the scan results are
             incorrect and would like a refund for the diagnostic service.
-          </div>
+          </p>
         </div>
       </div>
     </div>

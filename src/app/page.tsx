@@ -89,7 +89,7 @@ export default function Overview() {
             </div>
             <div className="flex items-center justify-center overflow-x-auto">
               <Image
-                    loader={customImageLoader}
+                loader={customImageLoader}
 
                 src={images.barChart}
                 width={800}
@@ -120,7 +120,7 @@ export default function Overview() {
             </div>
             <div className="flex items-center justify-center overflow-x-auto">
               <Image
-                    loader={customImageLoader}
+                loader={customImageLoader}
 
                 src={images.lineChart}
                 width={800}

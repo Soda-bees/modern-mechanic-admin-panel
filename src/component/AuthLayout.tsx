@@ -5,10 +5,10 @@ import Header from './Header';
 import Navbar from './Navbar';
 
 export default function AuthLayout() {
-  const { token } = useAuth();
+  const { token , loading } = useAuth();
 
   if (!token) return null;
-
+  if(loading) return null
   return (
     <>
       <Header />

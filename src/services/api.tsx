@@ -8,3 +8,12 @@ export const handleLogin = async (body: ILogin) => {
         return error
     }
 }
+
+export const handleGetAllUser = async () => {
+    try {
+        const response = await axiosInstance.get('admin/getAllUsers')
+        return response
+    } catch (error) {
+        return error
+    }
+}

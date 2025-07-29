@@ -34,10 +34,10 @@ const LoginPage = () => {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 1024); // tailwind md = 768px
+      setIsSmallScreen(window.innerWidth < 1024);
     };
 
-    checkScreenSize(); // initial check
+    checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
@@ -63,8 +63,6 @@ const LoginPage = () => {
     };
   }, []);
 
-  if (loading || token) return null;
-
   const handleSetAuthToken = () => {
     setLoader(true)
     setTimeout(() => {
@@ -78,20 +76,19 @@ const LoginPage = () => {
       setLoader(true)
       const body = { email, password }
       const response = await handleLogin(body) as LoginResponse
-      console.log("res==>", response.data);
       if (response.data.success) {
-        alert('login')
+        login(response.data.token)
       } else {
         alert("Something went wrong. Please try again!")
       }
     } catch (error) {
-      console.log("error==>", error);
       alert("Something went wrong. Please try again!")
     } finally {
       setLoader(false)
     }
   }
 
+  if (loading || token) return null
 
   return (
     <div className="relative w-screen h-screen overflow-hidden flex">
@@ -172,7 +169,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
+              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
             </div>
           </motion.div>
         )
@@ -211,7 +208,7 @@ const LoginPage = () => {
               <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
               <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              <SimpleButton title='Login' onClick={handleSetAuthToken} loader={loader} />
+              <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} />
             </div>
           </motion.div>
         )
