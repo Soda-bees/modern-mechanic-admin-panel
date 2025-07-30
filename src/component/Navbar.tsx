@@ -44,7 +44,7 @@ const Navbar = () => {
             <div className="flex flex-row items-center custom1100:justify-evenly bg-headerBG mt-4 w-max min-w-full p-4 rounded-2xl shadow-sm whitespace-nowrap ">
                 <Button title="Overview" activeIcon={images.overViewActive} inactiveIcon={images.overViewInActive} href="/" currentPath={['/']} />
                 <Button title="Users Management" activeIcon={images.userActive} inactiveIcon={images.userInActive} href="/usersmanagement" currentPath={['/usersmanagement']} />
-                <Button title="Scan Results" activeIcon={images.scnaActive} inactiveIcon={images.scanInActive} href="/scanResults" currentPath={['/scanResults']} />
+                <Button title="Scan Results" activeIcon={images.scnaActive} inactiveIcon={images.scanInActive} href="/scanresults" currentPath={['/scanresults']} />
                 <Button title="Complaints" activeIcon={images.complainsActive} inactiveIcon={images.complainsInActive} href="/complaints" currentPath={['/complaints']} />
                 <Button title="Workshops" activeIcon={images.workshopsActive} inactiveIcon={images.workshopsInActive} href="/workshops" currentPath={['/workshops']} />
                 <Button title="Support" activeIcon={images.supportActive} inactiveIcon={images.supportInActive} href="/support" currentPath={['/support']} />

@@ -19,7 +19,7 @@ type Scan = {
   estimatedCost: string;
 };
 
-export default function ScanResults() {
+export default function Scanresults() {
   const { search } = useSearch()
   const [scans, setScans] = useState<Scan[]>([]);
 
