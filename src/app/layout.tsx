@@ -2,6 +2,7 @@ import './globals.css';
 import { SearchProvider } from '@/context/SearchContext';
 import AuthLayout from '@/component/AuthLayout';
 import { AuthProvider } from '@/context/AuthContext';
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: 'OBD-Admin',

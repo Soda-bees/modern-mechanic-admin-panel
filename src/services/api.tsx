@@ -17,3 +17,25 @@ export const handleGetAllUser = async () => {
         return error
     }
 }
+
+export const uploadWorkshopImg = async (data: FormData) => {
+    try {
+        const response = await axiosInstance.post('user/upload_image', data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+export const handleAddWorkshop = async (body: addWorkshopform) => {
+    try {
+        const response = await axiosInstance.post('admin/adminCreateWorkshop', body)
+        return response
+    } catch (error) {
+        return error
+    }
+}

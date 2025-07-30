@@ -21,3 +21,19 @@ type GetAllUserResponse = {
         data: User[]
     };
 };
+
+type uploadImg = {
+    data: {
+        message: string;
+        success: boolean;
+        url: string
+    }
+}
+
+type addWorkshopResponse = {
+    data:{
+        message: string;
+        success: boolean;
+        data: IWorkshop
+    }
+}
