@@ -10,18 +10,6 @@ import { handleLogin } from '@/services/api';
 import Image from 'next/image';
 import { customImageLoader } from '@/lib/imageLoader';
 
-type LoginResponse = {
-  data: {
-    message: string;
-    token: string;
-    adminData: {
-      email: string;
-    };
-    success: boolean;
-  };
-};
-
-
 const LoginPage = () => {
   const router = useRouter();
   const { login, token, loading } = useAuth();
@@ -87,6 +75,22 @@ const LoginPage = () => {
       setLoader(false)
     }
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Enter") {
+          handleAdminLogin(); // Trigger login logic
+        }
+    };
+
+    // Listen for the keydown event
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };
+}, [email, password]);
 
   if (loading || token) return null
 
