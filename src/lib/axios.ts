@@ -1,15 +1,3 @@
-// // lib/axios.ts
-// import axios from 'axios';
-
-// const axiosInstance = axios.create({
-//   baseURL: 'http://192.168.100.199:5000/', // use .env for base URL
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-// });
-
-// export default axiosInstance;
-
 import axios from 'axios';
 
 const baseURL = 'http://192.168.100.199:5000/'

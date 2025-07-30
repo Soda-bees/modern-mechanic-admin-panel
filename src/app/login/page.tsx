@@ -68,9 +68,9 @@ const LoginPage = () => {
         login(response.data.token)
       } else {
         alert("Something went wrong. Please try again!")
-      }
+      }      
     } catch (error) {
-      alert("Something went wrong. Please try again!")
+      alert("Something went wrong. Please try again!")      
     } finally {
       setLoader(false)
     }
