@@ -21,3 +21,21 @@ type GetAllUserResponse = {
         data: User[]
     };
 };
+
+
+type GetAllScanResponse = {
+    data: {
+        message: string;
+        success: boolean;
+        data: Scan[]
+    };
+};
+
+
+type GetAllComplaintsResponse = {
+    data: {
+        message: string;
+        success: boolean;
+        data: Complaint[]
+    };
+};
