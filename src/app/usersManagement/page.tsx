@@ -7,6 +7,35 @@ import { handleGetAllUser } from "@/services/api";
 import Loader from "@/component/loader";
 import { useSearch } from "@/context/SearchContext";
 
+type Cars = {
+  id: number;
+  image: string;
+  make: string;
+  model: string;
+  selected: boolean;
+  transmission: string;
+  user_id: number;
+  year: number
+}
+
+type User = {
+  id: number;
+  user_name: string;
+  email: string;
+  zip_code: string;
+  cars: Cars[];
+  total_complaints: number;
+  total_scans: number
+};
+
+type Response = {
+  data: {
+    message: string;
+    success: boolean;
+    data: User[]
+  };
+};
+
 export default function Usersmanagement() {
   const { search } = useSearch()
 
@@ -15,7 +44,7 @@ export default function Usersmanagement() {
 
   const getUsers = async () => {
     try {
-      const response = await handleGetAllUser() as GetAllUserResponse
+      const response = await handleGetAllUser() as Response
       console.log("get all user", response?.data);
       if (response?.data?.success) {
         setUsers(response?.data?.data)
@@ -85,7 +114,7 @@ export default function Usersmanagement() {
                         className="bg-white rounded-xl shadow-sm text-sm text-gray-800 cursor-pointer"
                       >
                         <td className="px-4 py-4 rounded-l-xl">{
-                          highlightText(user.user_name, search)
+                        highlightText(user.user_name , search)
                         }</td>
                         <td className="px-4 py-4">{user.email}</td>
                         <td className="px-4 py-4">{user.zip_code}</td>
