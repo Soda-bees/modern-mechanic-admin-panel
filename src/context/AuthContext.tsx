@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const loginAuthContext = (newToken: string) => {
-    // Cookie is set on server during login API call
     setToken(newToken);
     router.push('/');
   };

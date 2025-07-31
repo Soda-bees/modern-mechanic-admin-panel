@@ -13,7 +13,7 @@ export async function loginUser({ email, password }: ILogin) {
             cookieStore.set('token', token, {
                 httpOnly: true,
                 secure: true,
-                maxAge: 60 * 5,
+                maxAge: 60 * 60 * 24,
                 sameSite: 'lax',
                 path: '/',
             })

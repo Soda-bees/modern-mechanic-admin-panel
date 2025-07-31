@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import images from '@/services/images';
-import SimpleButton from '@/component/simpleButton';
-import { handleLogin } from '@/services/api';
 import Image from 'next/image';
 import { customImageLoader } from '@/lib/imageLoader';
 import { loginUser } from './actions';
@@ -19,7 +17,6 @@ const LoginForm = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [loader, setLoader] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
@@ -53,58 +50,18 @@ const LoginForm = () => {
     };
   }, []);
 
-  const handleSetAuthToken = () => {
-    setLoader(true)
-    setTimeout(() => {
-      setLoader(false)
-      loginAuthContext('authToken');
-    }, 1500);
-  };
-
-  // const handleAdminLogin = async () => {
-  //   try {
-  //     setLoader(true)
-  //     const body = { email, password }
-  //     const response = await handleLogin(body) as LoginResponse
-  //     if (response.data.success) {
-  //       login(response.data.token)
-  //     } else {
-  //       alert("Something went wrong. Please try again!")
-  //     }      
-  //   } catch (error) {
-  //     alert("Something went wrong. Please try again!")      
-  //   } finally {
-  //     setLoader(false)
-  //   }
-  // }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     startTransition(async () => {
       const result = await loginUser({ email, password })
-      console.log(result);
-      // if(result.success){
-      //   loginAuthContext(result.token)
-      // }
+      if (result.success && result.token) {
+        loginAuthContext(result.token)
+      } else {
+        alert("Something went wrong. Please try again!")
+      }
     })
 
   }
-
-  //   useEffect(() => {
-  //     const handleKeyDown = (event: KeyboardEvent) => {
-  //         if (event.key === "Enter") {
-  //           handleAdminLogin(); // Trigger login logic
-  //         }
-  //     };
-
-  //     // Listen for the keydown event
-  //     window.addEventListener("keydown", handleKeyDown);
-
-  //     // Clean up the event listener on component unmount
-  //     return () => {
-  //         window.removeEventListener("keydown", handleKeyDown);
-  //     };
-  // }, [email, password]);
 
   if (loading || token) return null
 
@@ -154,47 +111,52 @@ const LoginForm = () => {
 
       {isSmallScreen ? (
         !showImage && (
-          <motion.div
-            initial={{ opacity: 0, y: 300 }}  // Starts off-screen to the left
-            animate={{ opacity: 1, y: 0 }}     // Slides to its original position (right side)
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className='flex flex-col w-full '>
+          <form onSubmit={handleSubmit} className='w-full flex flex-row'>
             <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.5 }}
-              transition={{
-                duration: 0.6,
-                delay: 1, // Calculate delay dynamically
-                ease: "easeOut",
-              }}
-              className='pt-3 ml-3'>
-              <Image
-                loader={customImageLoader}
-                src={images.logo}
-                alt={'Logo'}
-                width={55}
-                height={55}
-                className=""
-              />
-            </motion.div>
-            <div className='w-full px-4 mx-auto my-auto mx-auto sm:w-[80%] md:w-[60%]'>
-              <div className='text-3xl text-center'>
-                👋
+              initial={{ opacity: 0, y: 300 }}
+              animate={{ opacity: 1, y: 0 }}   
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className='flex flex-col w-full h-full'>
+              <motion.div
+                initial={{ opacity: 0, x: -100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 1,
+                  ease: "easeOut",
+                }}
+                className='pt-3 ml-3'>
+                <Image
+                  loader={customImageLoader}
+                  src={images.logo}
+                  alt={'Logo'}
+                  width={55}
+                  height={55}
+                  className=""
+                />
+              </motion.div>
+              <div className='w-full px-4 mx-auto my-auto sm:w-[80%] md:w-[60%]'>
+                <div className='text-3xl text-center'>
+                  👋
+                </div>
+                <div className='text-3xl font-bold text-black text-center'>Welcome back</div>
+                <div className='text-xl font-medium text-black text-center'>Drive smarter. Diagnose faster.</div>
+                <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
+                <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
+                <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
+                {/* <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} /> */}
+                <button type='submit' disabled={isPending}
+                  className="bg-orange text-white px-6 py-3 rounded-lg shadow-md font-semibold cursor-pointer w-full flex items-center justify-center h-14">
+                  {isPending ? <img src={images.loader} className='w-8 h-8 filter brightness-0 invert animate-spin' /> : 'Login'}
+                </button>
               </div>
-              <div className='text-3xl font-bold text-black text-center'>Welcome back</div>
-              <div className='text-xl font-medium text-black text-center'>Drive smarter. Diagnose faster.</div>
-              <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
-              <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-              {/* <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} /> */}
-            </div>
-          </motion.div>
+            </motion.div>
+          </form>
         )
       ) : (
         stage === 'done' && (
           <form onSubmit={handleSubmit}>
-
             <motion.div
               initial={{ opacity: 0, x: 300 }}  // Starts off-screen to the left
               animate={{ opacity: 1, x: 0 }}     // Slides to its original position (right side)
@@ -228,14 +190,13 @@ const LoginForm = () => {
                 <div className='mt-8 text-lg font-medium text-black'>Log In to Your Account</div>
                 <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg my-2 text-black' placeholder='Email' type='text' onChange={(e) => setEmail((e.target as HTMLInputElement).value)} value={email} />
                 <input className='focus:outline-none w-full p-3 bg-headerBG rounded-lg mt-2 mb-6 text-black' placeholder='Pasword' type='password' onChange={(e) => setPassword((e.target as HTMLInputElement).value)} value={password} />
-                {/* <SimpleButton title='Login' onClick={handleAdminLogin} loader={loader} /> */}
-                <button type='submit' disabled={isPending} className='bg-red-500'  >
-                  {isPending ? 'Logging in...' : 'Login'}
+                <button type='submit' disabled={isPending}
+                  className="bg-orange text-white px-6 py-3 rounded-lg shadow-md font-semibold cursor-pointer w-full flex items-center justify-center h-14">
+                  {isPending ? <img src={images.loader} className='w-8 h-8 filter brightness-0 invert animate-spin' /> : 'Login'}
                 </button>
               </div>
             </motion.div>
           </form>
-
         )
       )}
     </div>

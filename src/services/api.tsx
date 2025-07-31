@@ -39,3 +39,12 @@ export const handleAddWorkshop = async (body: addWorkshopform) => {
         return error
     }
 }
+
+export const handleGetAllWorkshop = async () => {
+    try {
+        const response = await axiosInstance.get('admin/adminGetAllWorkshops')
+        return response
+    } catch (error) {
+        return error
+    }
+}

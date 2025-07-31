@@ -31,9 +31,17 @@ type uploadImg = {
 }
 
 type addWorkshopResponse = {
-    data:{
+    data: {
         message: string;
         success: boolean;
         data: IWorkshop
+    }
+}
+
+type getAllWorkshopResponse = {
+    data: {
+        message: string;
+        success: boolean;
+        data: IWorkshop[]
     }
 }
