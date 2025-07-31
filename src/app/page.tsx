@@ -5,35 +5,72 @@ import PageHeader from "@/component/PageHeader";
 import Image from "next/image";
 import images from "@/services/images";
 import { customImageLoader } from "@/lib/imageLoader";
+import { useEffect, useState } from "react";
+import { handleGetSummary } from "@/services/api";
 
 export default function Overview() {
 
-  const summaryCards = [
+  const [summaryCards, setSummaryCards] = useState([
     {
       title: "Total Users",
-      value: "2,340",
+      value: "0",
       subtitle: "See who’s driving with us.",
       icon: images.Users,
     },
     {
       title: "Total Workshops",
-      value: "187",
+      value: "0",
       subtitle: "Verified garages in our network.",
       icon: images.Workshops,
     },
     {
       title: "Scans",
-      value: "12,498",
+      value: "0",
       subtitle: "Every scan makes a car smarter.",
       icon: images.Scan,
     },
     {
       title: "Complaints",
-      value: "54",
+      value: "0",
       subtitle: "User voices help us improve.",
       icon: images.Complains,
     },
-  ];
+  ])
+
+  const getAllSummary = async () => {
+    try {
+      const response = await handleGetSummary() as GetAllSummaryResponse
+      if (response?.success) {
+        const { total_complaints, total_scans, total_users, total_workshops } = response?.data
+        setSummaryCards(prev => [
+          {
+            ...prev[0],
+            value: total_users.toString(),
+          },
+          {
+            ...prev[1],
+            value: total_workshops.toString(),
+          },
+          {
+            ...prev[2],
+            value: total_scans.toString(),
+          },
+          {
+            ...prev[3],
+            value: total_complaints.toString(),
+          },
+        ]);
+      } else {
+        alert("Something went wrongasd.")
+      }
+    } catch (error) {
+      alert("Something went wrong.")
+    }
+  }
+
+  useEffect(() => {
+    getAllSummary()
+  }, [])
 
   return (
     <ProtectedRoute>

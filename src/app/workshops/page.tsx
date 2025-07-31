@@ -2,7 +2,6 @@
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import images from "@/services/images";
 import { useEffect, useState } from "react";
 import AddWorkshopModal from "@/component/AddWorkshopModal";
 import Link from "next/link";
@@ -20,17 +19,6 @@ export default function Workshops() {
   const [workshops, setWorkshops] = useState<IWorkshop[]>([])
   const [loading, setLoading] = useState(false)
 
-  // const dummyWorkshops = Array(10)
-  //   .fill(null)
-  //   .map((_, index) => ({
-  //     id: `${index + 1}`,
-  //     name: "AutoFix Garage",
-  //     website: "www.exampleworkshop.com",
-  //     email: "info@workshop.com",
-  //     zipcode: "90125",
-  //     logo: images.workshopImage,
-  //   }));
-
   useEffect(() => {
     getWorkshop()
   }, [])
@@ -40,7 +28,6 @@ export default function Workshops() {
     try {
       setLoading(true)
       const response = await handleGetAllWorkshop() as getAllWorkshopResponse
-      console.log("allo workshop res=--=-=>", response);
       if (response?.data?.success) {
         setWorkshops(response?.data?.data)
       } else {

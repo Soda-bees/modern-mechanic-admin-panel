@@ -1,9 +1,5 @@
-export async function generateStaticParams() {
-  // Example: return all possible IDs
-  const ids = Array.from({ length: 10 }, (_, i) => (i + 1).toString()); // ideally fetch from an API or database
-  return ids.map((id) => ({ id }));
-}
 import { customImageLoader } from "@/lib/imageLoader";
+import { handleGetComplaintDetail } from "@/services/api";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -15,6 +11,12 @@ export default async function SingleComplaint({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  
+  const complaint = await handleGetComplaintDetail(id)
+  
+  if (!complaint) {
+    return <div className="text-center mt-10">Complaint not found</div>;
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">

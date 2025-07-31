@@ -10,43 +10,43 @@ export const handleLogin = async (body: ILogin) => {
 };
 
 export const handleGetAllUser = async () => {
-    try {
-        const response = await axiosInstance.get('admin/getAllUsers')
-        return response
-    } catch (error) {
-        return error
-    }
+  try {
+    const response = await axiosInstance.get('admin/getAllUsers')
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export const uploadWorkshopImg = async (data: FormData) => {
-    try {
-        const response = await axiosInstance.post('user/upload_image', data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        return response
-    } catch (error) {
-        return error
-    }
+  try {
+    const response = await axiosInstance.post('user/upload_image', data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export const handleAddWorkshop = async (body: addWorkshopform) => {
-    try {
-        const response = await axiosInstance.post('admin/adminCreateWorkshop', body)
-        return response
-    } catch (error) {
-        return error
-    }
+  try {
+    const response = await axiosInstance.post('admin/adminCreateWorkshop', body)
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export const handleGetAllWorkshop = async () => {
-    try {
-        const response = await axiosInstance.get('admin/adminGetAllWorkshops')
-        return response
-    } catch (error) {
-        return error
-    }
+  try {
+    const response = await axiosInstance.get('admin/adminGetAllWorkshops')
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export const handleScanResult = async () => {
@@ -67,3 +67,48 @@ export const handleComplaints = async () => {
     return error;
   }
 };
+
+export const handleGetWorkshopDetail = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`admin/workshop/${id}`)    
+    if (response?.data?.success) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    return null
+  }
+}
+
+export const handleGetComplaintDetail = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`admin/complaint/${id}`)        
+    if (response?.data?.success) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    return null
+  }
+}
+
+export const handleGetScanDetail = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`admin/scan/${id}`)            
+    if (response?.data?.success) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    return null
+  }
+}
+
+export const handleGetSummary = async () => {
+  try {
+    const response = await axiosInstance.get('admin/summary')
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
