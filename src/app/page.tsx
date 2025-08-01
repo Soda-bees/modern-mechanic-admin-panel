@@ -7,9 +7,10 @@ import images from "@/services/images";
 import { customImageLoader } from "@/lib/imageLoader";
 import { useEffect, useState } from "react";
 import { handleGetSummary } from "@/services/api";
+import ScanBarChart from "@/component/BarChart";
+import LineChartComponent from "@/component/LineChart";
 
 export default function Overview() {
-
   const [summaryCards, setSummaryCards] = useState([
     {
       title: "Total Users",
@@ -35,14 +36,15 @@ export default function Overview() {
       subtitle: "User voices help us improve.",
       icon: images.Complains,
     },
-  ])
+  ]);
 
   const getAllSummary = async () => {
     try {
-      const response = await handleGetSummary() as GetAllSummaryResponse
+      const response = (await handleGetSummary()) as GetAllSummaryResponse;
       if (response?.success) {
-        const { total_complaints, total_scans, total_users, total_workshops } = response?.data
-        setSummaryCards(prev => [
+        const { total_complaints, total_scans, total_users, total_workshops } =
+          response?.data;
+        setSummaryCards((prev) => [
           {
             ...prev[0],
             value: total_users.toString(),
@@ -61,16 +63,16 @@ export default function Overview() {
           },
         ]);
       } else {
-        alert("Something went wrongasd.")
+        alert("Something went wrongasd.");
       }
     } catch (error) {
-      alert("Something went wrong.")
+      alert("Something went wrong.");
     }
-  }
+  };
 
   useEffect(() => {
-    getAllSummary()
-  }, [])
+    getAllSummary();
+  }, []);
 
   return (
     <ProtectedRoute>
@@ -95,7 +97,9 @@ export default function Overview() {
                     className="object-contain"
                   />
                 </div>
-                <h2 className="text-2xl lg:text-3xl font-semibold text-black">{item.value}</h2>
+                <h2 className="text-2xl lg:text-3xl font-semibold text-black">
+                  {item.value}
+                </h2>
               </div>
               <p className="text-lg sm:text-xl font-medium text-black font-semibold">
                 {item.title}
@@ -105,9 +109,9 @@ export default function Overview() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <div className="bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 overflow-hidden">
+          <div className="bg-headerBG rounded-xl sm:p-6 shadow-sm p-1">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 p-3">
               <div>
                 <p className="text-sm text-anotherGrey">Scan</p>
                 <h3 className="text-2xl sm:text-3xl font-semibold text-black">
@@ -124,20 +128,14 @@ export default function Overview() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center overflow-x-auto">
-              <Image
-                loader={customImageLoader}
-
-                src={images.barChart}
-                width={800}
-                height={100}
-                className="object-contain max-w-full h-auto mt-5"
-                alt="chart"
-              />
+            <div className="mt-5 w-full overflow-x-auto">
+              <div className="min-w-[600px]">
+                <ScanBarChart />
+              </div>
             </div>
           </div>
 
-          <div className="bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col justify-between bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <p className="text-sm text-anotherGrey">Total Users</p>
@@ -155,16 +153,10 @@ export default function Overview() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center overflow-x-auto">
-              <Image
-                loader={customImageLoader}
-
-                src={images.lineChart}
-                width={800}
-                height={100}
-                className="object-contain max-w-full h-auto mt-5"
-                alt="chart"
-              />
+            <div className="w-full overflow-x-auto mt-5">
+              <div className="min-w-[600px]">
+                <LineChartComponent />
+              </div>
             </div>
           </div>
         </div>
