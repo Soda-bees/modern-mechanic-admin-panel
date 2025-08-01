@@ -63,7 +63,7 @@ export default function Overview() {
           },
         ]);
       } else {
-        alert("Something went wrongasd.");
+        alert("Something went wrong.");
       }
     } catch (error) {
       alert("Something went wrong.");

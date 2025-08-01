@@ -77,17 +77,11 @@ type GetUserDeleteResponse = {
   data: {
     message: string;
     success: boolean;
-    data: {
-      total_complaints: number
-      total_scans: number
-      total_users: number
-      total_workshops: number
-    }
+    token ?: string
   }
 }
 
 type DeleteWorkshopResponse = {
   message: string;
   success: boolean
-  token ?: string
 }
