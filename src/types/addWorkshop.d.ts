@@ -1,5 +1,7 @@
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    getWorkshop?: () => Promise<void>;
+    workshop?:IWorkshop
 };
 
 type addWorkshopform = {
@@ -11,6 +13,7 @@ type addWorkshopform = {
     address: string;
     description: string;
     image?: string | null;
+    id?:string
 }
 
 type IWorkshop = {
@@ -25,4 +28,12 @@ type IWorkshop = {
     website_link: string;
     zipcode: string;
     created_at?:string;
+}
+
+type IWorkshopDeleteModal = { 
+    title: string; 
+    description: string; 
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    onClick: () => void 
 }

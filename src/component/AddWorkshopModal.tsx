@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon, CloudArrowUpIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import { handleAddWorkshop, uploadWorkshopImg } from "@/services/api";
+import { handleAddWorkshop, handleEditWorkshop, uploadWorkshopImg } from "@/services/api";
 import Loader from "./loader";
 import SimpleButton from "./simpleButton";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function AddWorkshopModal({ setIsOpen }: Props) {
+export default function AddWorkshopModal({ setIsOpen, getWorkshop, workshop }: Props) {
+  const searchParams = useSearchParams();
+  const router = useRouter()
+
+  const value = searchParams.get('modal')
+
   const [showModal, setShowModal] = useState(true);
   const [image, setImage] = useState<string | null>(null);
   const [uploadImgLoader, setUploadImgLoader] = useState<boolean>(false)
+  const [isAdd, setIsAdd] = useState<boolean | null>(null)
+  const [workshopId, setWorkshopId] = useState<string | null>(null);
   const [form, setForm] = useState<addWorkshopform>({
     name: "",
     email: "",
@@ -21,6 +29,29 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
     description: "",
   });
   const [loader, setLoader] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (value === 'add') {
+      setIsAdd(true)
+    } else if (value === 'edit') {
+      setIsAdd(false)
+      if (workshop) {
+        setImage(workshop?.image)
+        setWorkshopId(workshop.id.toString())
+        setForm({
+          name: workshop.name || "",
+          email: workshop.email || "",
+          phone_number: workshop.phone_number || "",
+          zipcode: workshop.zipcode || "",
+          website_link: workshop.website_link || "",
+          address: workshop.address || "",
+          description: workshop.description || "",
+        });
+      } else {
+        alert("Something went wrong. Please try again!")
+      }
+    }
+  }, [searchParams])
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -46,7 +77,6 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log("work");
 
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -54,6 +84,8 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
 
   const handleClose = () => {
     if (!uploadImgLoader && !loader) {
+      setIsAdd(null)
+      router.back()
       setShowModal(false);
       setTimeout(() => setIsOpen(false), 200);
     }
@@ -87,7 +119,7 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
     // Description
     if (!form.description.trim()) return "Description is required";
 
-    return null; // ✅ No errors
+    return null;
   }
 
   const handleContinue = async () => {
@@ -95,7 +127,7 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
       setLoader(true)
       const error = validateForm(form);
       if (error) {
-        alert(error); // Show first error
+        alert(error);
         return;
       }
       const updatedForm = {
@@ -105,6 +137,9 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
       const response = await handleAddWorkshop(updatedForm) as addWorkshopResponse
       if (response?.data?.success) {
         alert('Workshop added successfully!')
+        if (getWorkshop) {
+          getWorkshop()
+        }
         setIsOpen(false)
       } else {
         alert("Something went wrong. Please try again!")
@@ -114,7 +149,39 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
     } finally {
       setLoader(false)
     }
+  }
 
+  const handleEdit = async () => {
+    try {
+      if (!workshopId) {
+        alert("Something went wrong. Please try again!")
+        return
+      }
+      setLoader(true)
+      const error = validateForm(form);
+      if (error) {
+        alert(error);
+        return;
+      }
+      const updatedForm = {
+        ...form,
+        image,
+        id: workshopId
+      }
+      const response = await handleEditWorkshop(updatedForm) as addWorkshopResponse
+      if(response?.data?.success){
+        setForm
+        alert('Workshop added successfully!')
+        setIsAdd(null)
+        setShowModal(false)
+        setTimeout(() => setIsOpen(false), 200);
+        router.push(`/workshops/${workshopId}`)
+      }
+    } catch (error) {
+      alert("Something went wrong. Please try again!")
+    } finally {
+      setLoader(false)
+    }
   }
 
   return (
@@ -137,7 +204,9 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Add New Workshop</h2>
+              <h2 className="text-xl font-semibold">
+                {isAdd ? 'Add New Workshop' : 'Edit Workshop'}
+              </h2>
               <motion.button
                 onClick={handleClose}
                 whileHover={{ scale: 1.05 }}
@@ -251,7 +320,7 @@ export default function AddWorkshopModal({ setIsOpen }: Props) {
               >
                 Save Workshop
               </motion.button> */}
-              <SimpleButton title="Save Workshop" loader={loader} onClick={handleContinue} />
+              <SimpleButton title="Save Workshop" loader={loader} onClick={() => isAdd ? handleContinue() : handleEdit()} />
             </div>
           </motion.div>
         </motion.div>

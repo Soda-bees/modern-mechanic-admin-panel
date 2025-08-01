@@ -112,3 +112,23 @@ export const handleGetSummary = async () => {
     return error
   }
 }
+
+export const deleteWorkshop = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete(`admin/delete_workshop/${id}`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const handleEditWorkshop = async (body: addWorkshopform) => {
+  console.log("workshop id" , body.id);
+  
+  try {
+    const response = await axiosInstance.put(`admin/edit_workshop/${body.id}`, body)
+    return response
+  } catch (error) {
+    return error
+  }
+}

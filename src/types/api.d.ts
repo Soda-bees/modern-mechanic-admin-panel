@@ -73,3 +73,8 @@ type GetAllSummaryResponse = {
         total_workshops: number
     }
 }
+
+type DeleteWorkshopResponse = {
+    message: string;
+    success: boolean
+}

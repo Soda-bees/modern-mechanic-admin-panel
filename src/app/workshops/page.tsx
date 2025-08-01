@@ -10,8 +10,10 @@ import { useSearch } from "@/context/SearchContext";
 import Loader from "@/component/loader";
 import Image from "next/image";
 import { customImageLoader } from "@/lib/imageLoader";
+import { useRouter } from "next/navigation";
 
 export default function Workshops() {
+  const router = useRouter();
 
   const { search } = useSearch()
 
@@ -61,6 +63,13 @@ export default function Workshops() {
     workshop.zipcode.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleOpenModal = async () => {
+    router.push("?modal=add");
+    setTimeout(() => {
+      setVisibleModal(true);
+    }, 100);
+  }
+
   return (
     <ProtectedRoute>
       <div className="p-4 sm:p-6">
@@ -69,7 +78,7 @@ export default function Workshops() {
           showFilter
           addShowButton
           buttonTitle="+ Add Workshop"
-          onAddShowClick={() => setVisibleModal(true)}
+          onAddShowClick={handleOpenModal}
         />
         <div className="mt-6">
           {loading ? (
@@ -80,9 +89,9 @@ export default function Workshops() {
                 {filteredWorkshop.map((shop, index) => (
                   <div
                     key={index}
-                    className="bg-headerBG rounded-xl shadow-sm border border-gray-100 p-3 text-start"
+                    className="bg-headerBG rounded-xl shadow-sm border border-gray-100 p-3 text-start "
                   >
-                    <div className="bg-white w-full rounded-xl flex flex-col items-center p-8">
+                    <div className="bg-white w-full rounded-xl flex flex-col items-center justify-center p-8 h-[250px]">
                       <Image
                         loader={customImageLoader}
                         src={shop.image}
@@ -121,7 +130,7 @@ export default function Workshops() {
           )}
         </div>
       </div>
-      {visibleModal && <AddWorkshopModal setIsOpen={setVisibleModal} />}
+      {visibleModal && <AddWorkshopModal getWorkshop={getWorkshop} setIsOpen={setVisibleModal} />}
     </ProtectedRoute>
   );
 }
