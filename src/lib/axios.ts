@@ -22,7 +22,6 @@ axiosInstance.interceptors.response.use(
                 headers: error.response.headers,
                 message: error.response.data?.message || 'Something went wrong',
             };
-            console.error('Error Data:', errorData);
             return Promise.reject(errorData); 
         } else if (error.request) {
             console.error('No Response Received:', error.request);
