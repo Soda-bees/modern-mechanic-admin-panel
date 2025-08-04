@@ -59,7 +59,7 @@ export default function WorkshopDetailsClient({ workshop }: { workshop: IWorksho
                     className="border border-borderGray rounded-3xl mb-4 sm:mb-0 p-6 object-contain"
                 />
 
-                <div className="sm:ml-6 w-full sm:w-auto">
+                <div className="sm:ml-6 w-full sm:w-auto text-black">
                     <h2 className="text-2xl sm:text-3xl font-semibold mb-2">
                         {workshop.name}
                     </h2>
@@ -73,14 +73,14 @@ export default function WorkshopDetailsClient({ workshop }: { workshop: IWorksho
 
             <div className="mt-6 w-full max-w-5xl">
                 <h3 className="text-base font-medium text-black mb-1">Short Description:</h3>
-                <p className="text-lg font-semibold">{workshop.description}</p>
+                <p className="text-lg font-semibold text-black">{workshop.description}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mt-6 border-t border-borderGray w-full max-w-5xl pt-4">
                 <button
                     onClick={handleOpenModal}
                     className="flex items-center px-4 py-2 rounded-lg border border-borderGray w-auto cursor-pointer">
-                    <PencilIcon className="h-4 w-4" />
+                    <PencilIcon className="h-4 w-4 text-black" />
                     <p className="text-black ml-2 text-sm">Edit Shop</p>
                 </button>
                 <button

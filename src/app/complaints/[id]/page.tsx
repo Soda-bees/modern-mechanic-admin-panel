@@ -11,9 +11,9 @@ export default async function SingleComplaint({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  
-  const complaint = await handleGetComplaintDetail(id)
-  
+
+  const complaint = await handleGetComplaintDetail(id);
+
   if (!complaint) {
     return <div className="text-center mt-10">Complaint not found</div>;
   }
@@ -38,20 +38,31 @@ export default async function SingleComplaint({
             User Information:
           </h4>
           <h1 className="text-3xl font-semibold text-black mt-5">
-            Emily Richardson
+            {complaint?.full_name}
           </h1>
-          <p className="mt-1">Email:</p>
-          <span className="font-semibold">emilyrichardson@gmail.com</span>
-          <p className="mt-1">Phone:</p>
-          <span className="font-semibold">+1234568799</span>
+          <p className="mt-1 text-black">Email:</p>
+          <span className="font-semibold text-black">{complaint?.email}</span>
+          <p className="mt-1 text-black">Phone:</p>
+          <span className="font-semibold text-black">
+            {complaint?.phone_number}
+          </span>
         </div>
         <div className="w-full sm:w-auto text-left sm:text-right mt-6 sm:mt-0">
           <p className="text-sm text-black font-semibold">Complaint</p>
           <p className="text-xs text-black mt-1">
-            Submitted on
+            Submitted on{" "}
             <span className="font-semibold text-black">
-              {" "}
-              July 17, 2025 • 16:45
+              {new Date(complaint.created_at).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}{" "}
+              •{" "}
+              {new Date(complaint.created_at).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              })}
             </span>
           </p>
         </div>
@@ -61,10 +72,10 @@ export default async function SingleComplaint({
 
       <div className="flex flex-col lg:flex-row justify-between items-start gap-6">
         <div className="w-full">
-          <h4 className="text-sm font-medium text-gray-600 flex items-center gap-2">
+          <h4 className="text-sm font-medium text-black flex items-center gap-2">
             <span className="bg-lightOrange text-orange-600 p-2 rounded-full">
               <Image
-              loader={customImageLoader}
+                loader={customImageLoader}
                 src={images.bugatti}
                 alt="Car Logo"
                 className="object-contain"
@@ -75,30 +86,29 @@ export default async function SingleComplaint({
             Vehicle Info:
           </h4>
           <h1 className="text-xl font-semibold text-black my-4">
-            Bugatti Chiron 2027
+            {complaint?.scan?.vehicle_info}
           </h1>
-          <p className="mt-1 text-sm">
-            DTC Code: <span className="text-orange font-semibold">P0025</span>
-          </p>
-          <p className="mt-1 text-sm">
-            Issue:
-            <span className="font-semibold">
-              {" "}
-              Exhaust Variable Camshaft Timing (Bank 2)
+          <p className="mt-1 text-sm text-black">
+            DTC Code:{" "}
+            <span className="text-orange font-semibold text-black">
+              {complaint?.scan?.dtc_code}
             </span>
           </p>
-          <p className="mt-4 text-sm">Estimated Cost:</p>
-          <span className="font-semibold">From $1,500 to $15,000+</span>
+          <p className="mt-1 text-sm text-black">
+            Issue:
+            <span className="font-semibold text-black">
+              {" "}
+              {complaint?.scan?.description}
+            </span>
+          </p>
+          {/* <p className="mt-4 text-sm text-black">Estimated Cost:</p>
+          <span className="font-semibold text-black">From $1,500 to $15,000+</span> */}
         </div>
 
-        <div className="max-w-2xl">
+        <div className="max-w-2xl w-full">
           <h2 className="text-base text-black mb-1">Complaint Message:</h2>
           <p className="bg-headerBG p-4 rounded-lg text-sm leading-relaxed text-black font-semibold">
-            I am not satisfied with the scan results. The diagnostic indicated
-            three issues with my engine, but my car was running perfectly fine
-            before I brought it in. I have taken my vehicle to another mechanic
-            who found no issues with the engine. I believe the scan results are
-            incorrect and would like a refund for the diagnostic service.
+            {complaint?.description}
           </p>
         </div>
       </div>

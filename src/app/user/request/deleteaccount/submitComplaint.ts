@@ -34,7 +34,10 @@ export async function verifyUser(formData: FormData) {
 
 export async function deleteAccount(token: string | null) {
   try {
-    const response = (await handleDeleteAccount(token)) as { data: any };
+    const response = (await handleDeleteAccount(token)) as { data: {
+      success: boolean;
+      message: string;
+    } };
     console.log("deleteAccount", response?.data);
     if (response?.data?.success) {
       return { message: "Account deleted!", success: true };
