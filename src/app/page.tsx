@@ -9,8 +9,13 @@ import { useEffect, useState } from "react";
 import { handleGetSummary } from "@/services/api";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
+import { useAppSelector } from "@/lib/hooks";
+import { selectScans, selectUsers } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {
+  const users = useAppSelector(selectScans)
+  console.log("users=-=--=-=>", users);
+
   const [summaryCards, setSummaryCards] = useState([
     {
       title: "Total Users",
@@ -41,27 +46,28 @@ export default function Overview() {
   const getAllSummary = async () => {
     try {
       const response = (await handleGetSummary()) as GetAllSummaryResponse;
+
       if (response?.success) {
-        const { total_complaints, total_scans, total_users, total_workshops } =
-          response?.data;
-        setSummaryCards((prev) => [
-          {
-            ...prev[0],
-            value: total_users.toString(),
-          },
-          {
-            ...prev[1],
-            value: total_workshops.toString(),
-          },
-          {
-            ...prev[2],
-            value: total_scans.toString(),
-          },
-          {
-            ...prev[3],
-            value: total_complaints.toString(),
-          },
-        ]);
+        // const { total_complaints, total_scans, total_users, total_workshops } =
+        //   response?.data;
+        // setSummaryCards((prev) => [
+        //   {
+        //     ...prev[0],
+        //     value: total_users.toString(),
+        //   },
+        //   {
+        //     ...prev[1],
+        //     value: total_workshops.toString(),
+        //   },
+        //   {
+        //     ...prev[2],
+        //     value: total_scans.toString(),
+        //   },
+        //   {
+        //     ...prev[3],
+        //     value: total_complaints.toString(),
+        //   },
+        // ]);
       } else {
         alert("Something went wrong.");
       }

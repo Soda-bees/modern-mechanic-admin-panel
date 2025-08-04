@@ -21,7 +21,6 @@ type IWorkshop = {
     email: string;
     name: string;
     address: string;
-    created_at: string;
     description: string;
     image: string;
     phone_number: string;

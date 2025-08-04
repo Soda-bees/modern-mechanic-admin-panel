@@ -2,27 +2,28 @@
 
 import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
-import images from "@/services/images";
-import { UserIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import Image from "next/image";
-import { customImageLoader } from "@/lib/imageLoader";
-import { useEffect, useState } from "react";
-import { handleComplaints } from "@/services/api";
-import Loader from "@/component/loader";
 import { useSearch } from "@/context/SearchContext";
+import { useEffect, useState } from "react";
+import { handleQueries } from "@/services/api";
+import Loader from "@/component/loader";
+import { UserIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import images from "@/services/images";
+import { customImageLoader } from "@/lib/imageLoader";
+import Link from "next/link";
 
-export default function Complaints() {
+export default function Queries() {
   const { search } = useSearch();
 
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [queries, setQueries] = useState<Queries[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getComplaints = async () => {
+  const getQueries = async () => {
     try {
-      const response = (await handleComplaints()) as GetAllComplaintsResponse;
-      if (response.data.success) {
-        setComplaints(response.data.data);
+      const response = await handleQueries() as GetQueriesResponse;
+      console.log("response gueries", response);
+      if (response?.success) {
+        setQueries(response?.queries);
       } else {
         alert("Something went wrong!");
       }
@@ -34,8 +35,8 @@ export default function Complaints() {
   };
 
   useEffect(() => {
-    getComplaints();
-  }, []);
+    getQueries()
+  }, [])
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;
@@ -54,15 +55,43 @@ export default function Complaints() {
     );
   };
 
-  const filteredComplaint = complaints.filter((complaint) =>
-    complaint.scan.dtc_code.toLowerCase().includes(search.toLowerCase())
+  const filteredqueries = queries.filter((querie) =>
+    querie.workshop.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
+    // <ProtectedRoute>
+    //   <div className="w-full px-4 sm:px-6 py-6">
+    //     <PageHeader title="Queries" showFilter={false} />
+
+    //     <p className="text-sm text-grey mt-2">
+    //       Here’s what your users are saying. Stay ahead. Stay helpful.
+    //     </p>
+
+    //     <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    //       {dummyMessages.map((msg, index) => (
+    //         <div
+    //           key={index}
+    //           className="bg-gray-100 rounded-lg p-4 shadow-sm text-left hover:shadow-md transition duration-200"
+    //         >
+    //           <p className="text-xs text-lightGrey">{msg.date}</p>
+    //           <h2 className="text-xl font-semibold text-gray-800 mt-1">
+    //             {msg.name}
+    //           </h2>
+    //           <p className="text-sm text-lightGrey mb-2 break-words">{msg.email}</p>
+
+    //           <p className="text-sm text-lightGrey mb-1">Message</p>
+    //           <p className="text-sm text-black break-words font-medium">{msg.message}</p>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </div>
+    // </ProtectedRoute>
+
     <ProtectedRoute>
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
-          title="Complaints"
+          title="Queries"
           showFilter
           onFilterClick={() => alert("filter clicked!")}
         />
@@ -70,11 +99,11 @@ export default function Complaints() {
           <div className="mt-6">
             <Loader />
           </div>
-        ) : filteredComplaint.length === 0 ? (
-          <p className="text-center text-gray-500 mt-8">No complaint found.</p>
+        ) : filteredqueries.length === 0 ? (
+          <p className="text-center text-gray-500 mt-8">No Queries found.</p>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            {filteredComplaint.map((complaint, index) => (
+            {filteredqueries.map((querie: Queries, index: number) => (
               <div
                 key={index}
                 className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-4"
@@ -82,11 +111,11 @@ export default function Complaints() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-base font-semibold text-black">
-                      Complaint
+                      Querie
                     </p>
                     <p className="text-sm text-lightGrey">
                       Submitted on{" "}
-                      {new Date(complaint.created_at).toLocaleDateString(
+                      {new Date(querie.created_at).toLocaleDateString(
                         "en-US",
                         {
                           year: "numeric",
@@ -95,7 +124,7 @@ export default function Complaints() {
                         }
                       )}{" "}
                       •{" "}
-                      {new Date(complaint.created_at).toLocaleTimeString(
+                      {new Date(querie.created_at).toLocaleTimeString(
                         "en-US",
                         {
                           hour: "2-digit",
@@ -106,23 +135,23 @@ export default function Complaints() {
                     </p>
                   </div>
                   <Link
-                    href={`/complaints/${complaint.id}`}
-                    className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <div className="flex items-center sm:space-x-2">
-                      <Image
-                        loader={customImageLoader}
-                        src={images.document}
-                        alt={"Document Logo"}
-                        width={15}
-                        height={15}
-                        className="object-contain"
-                      />
-                      <span className="hidden sm:flex text-xs sm:text-base font-medium text-black ">
-                        View Full Details
-                      </span>
-                    </div>
-                  </Link>
+                  href={`/queries/${querie.query_id}`}
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 border rounded-xl border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
+                  <div className="flex items-center sm:space-x-2">
+                    <Image
+                      loader={customImageLoader}
+                      src={images.document}
+                      alt={"Document Logo"}
+                      width={15}
+                      height={15}
+                      className="object-contain"
+                    />
+                    <span className="hidden sm:flex text-xs sm:text-base font-medium text-black ">
+                      View Full Details
+                    </span>
+                  </div>
+                </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -135,19 +164,19 @@ export default function Complaints() {
                     </h4>
                     <p className="text-sm text-black">Name:</p>
                     <p className="text-sm text-black font-semibold">
-                      {complaint.full_name}
+                      {querie.full_name}
                     </p>
                     <p className="text-sm text-black">Email:</p>
                     <p className="text-sm text-black font-semibold">
-                      {complaint.email}
+                      {querie.email}
                     </p>
                     <p className="text-sm text-black">Phone:</p>
                     <p className="text-sm text-black font-semibold">
-                      {complaint.phone_number}
+                      {querie.phone_number}
                     </p>
                   </div>
 
-                  <div className="space-y-1">
+                  {/* <div className="space-y-1">
                     <h4 className="text-sm font-medium text-black flex items-center gap-2">
                       <span className="bg-lightOrange text-orange-600 p-2 rounded-full">
                         <Image
@@ -162,46 +191,66 @@ export default function Complaints() {
                       Scan Vehicle Info:
                     </h4>
                     <p className="text-sm text-black font-semibold">
-                      {complaint.scan.vehicle_info}
+                      {highlightText(querie.workshop.name, search)}
                     </p>
                     <p className="text-sm text-black">
                       DTC Code:{" "}
                       <span className="text-orange font-semibold">
-                        {highlightText(complaint.scan.dtc_code, search)}
+                        {querie.workshop.email}
                       </span>
                     </p>
                     <p className="text-sm text-black">
                       Issue:{" "}
                       <span className="font-semibold">
                         {" "}
-                        {complaint.scan.description}
+                        {querie.workshop.zipcode}
                       </span>
                     </p>
                     <p className="text-sm text-black">
                       Urgency:{" "}
                       <span className="font-semibold">
                         {" "}
-                        {complaint.scan.urgency_level}
+                        {querie.workshop.website_link}
                       </span>
                     </p>
-                    <p className="text-sm text-black">
-                      Repair Difficulty:{" "}
-                      <span className="font-semibold">
-                        {" "}
-                        {complaint.scan.repair_difficulty}
-                      </span>
+                  </div> */}
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-medium text-black flex items-center gap-2">
+                      <span className="p-1.5 rounded-full bg-lightOrange">
+                        {/* <UserIcon className="w-4 h-4 text-orange" /> */}
+                        <Image
+                          src={images.Workshops}
+                          alt="workshop"
+                          loader={customImageLoader}
+                          width={15}
+                          height={15}
+                        />
+                      </span>{" "}
+                      Workshop Information:
+                    </h4>
+                    <p className="text-sm text-black">Name:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.name}
+                    </p>
+                    <p className="text-sm text-black">Email:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.email}
+                    </p>
+                    <p className="text-sm text-black">Phone:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.phone_number}
                     </p>
                   </div>
                 </div>
 
-                <div>
+                {/* <div>
                   <p className="text-sm font-medium text-black">
                     Complaint Message:
                   </p>
                   <p className="text-xs font-semibold text-gray-700 mt-1 rounded-xl bg-gray-100 p-4">
                     {complaint.description}
                   </p>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

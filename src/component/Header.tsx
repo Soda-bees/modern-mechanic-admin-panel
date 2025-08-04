@@ -8,11 +8,21 @@ import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@her
 import { useSearch } from '@/context/SearchContext';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
+import { useAppDispatch } from '@/lib/hooks';
+// import { clearUsers } from '@/lib/features/adminData/adminDataSlice';
 
 const Header = () => {
+
+    const dispatch = useAppDispatch()
+
     const pathname = usePathname();
     const { search, setSearch } = useSearch();
     const { logoutAuthContext } = useAuth();
+
+    const handleLogout = async () => {
+        // dispatch(clearUsers())
+        logoutAuthContext()
+    }
 
     return (
         <header className="bg-headerBG flex flex-col sm:flex-row justify-between items-center px-4 py-4 sm:px-8 w-full">
@@ -24,7 +34,7 @@ const Header = () => {
                     <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
                     <h4 className='font-bold text-black'>John Doe</h4>
                     <motion.button
-                        onClick={logoutAuthContext}
+                        onClick={handleLogout}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.95 }}
                         className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg ml-6'>
@@ -46,7 +56,7 @@ const Header = () => {
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
                     <h4 className='font-bold mr-6 text-black'>John Doe</h4>
                     <motion.button
-                        onClick={logoutAuthContext}
+                        onClick={handleLogout}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.95 }}
                         className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>

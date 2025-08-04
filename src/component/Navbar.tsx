@@ -47,7 +47,7 @@ const Navbar = () => {
                 <Button title="Scan Results" activeIcon={images.scnaActive} inactiveIcon={images.scanInActive} href="/scanresults" currentPath={['/scanresults']} />
                 <Button title="Complaints" activeIcon={images.complainsActive} inactiveIcon={images.complainsInActive} href="/complaints" currentPath={['/complaints']} />
                 <Button title="Workshops" activeIcon={images.workshopsActive} inactiveIcon={images.workshopsInActive} href="/workshops" currentPath={['/workshops']} />
-                <Button title="Support" activeIcon={images.supportActive} inactiveIcon={images.supportInActive} href="/support" currentPath={['/support']} />
+                <Button title="Queries" activeIcon={images.supportActive} inactiveIcon={images.supportInActive} href="/queries" currentPath={['/queries']} />
             </div>
         </div>
     );

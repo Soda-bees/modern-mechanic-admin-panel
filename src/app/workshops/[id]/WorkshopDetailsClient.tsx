@@ -34,7 +34,7 @@ export default function WorkshopDetailsClient({ workshop }: { workshop: IWorksho
         router.push("?modal=edit");
         setTimeout(() => {
             setIsEditModalVisible(true);
-          }, 600);
+        }, 1700);
     }
 
     return (

@@ -77,7 +77,7 @@ type GetUserDeleteResponse = {
   data: {
     message: string;
     success: boolean;
-    token ?: string
+    token?: string
   }
 }
 
@@ -85,3 +85,9 @@ type DeleteWorkshopResponse = {
   message: string;
   success: boolean
 }
+
+type GetQueriesResponse = {
+  message: string;
+  success: boolean;
+  queries: Queries[];
+};

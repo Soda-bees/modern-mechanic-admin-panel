@@ -72,7 +72,7 @@ export default function Workshops() {
 
   return (
     <ProtectedRoute>
-      <div className="p-4 sm:p-6">
+      <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
           title="Workshops"
           showFilter

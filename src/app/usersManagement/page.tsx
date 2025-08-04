@@ -45,7 +45,6 @@ export default function Usersmanagement() {
   const getUsers = async () => {
     try {
       const response = await handleGetAllUser() as Response
-      console.log("get all user", response?.data);
       if (response?.data?.success) {
         setUsers(response?.data?.data)
       } else {
@@ -58,9 +57,9 @@ export default function Usersmanagement() {
     }
   }
 
-  useEffect(() => {
-    getUsers()
-  }, [])
+  // useEffect(() => {
+  //   getUsers()
+  // }, [])
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;

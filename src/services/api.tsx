@@ -161,3 +161,12 @@ export const handleDeleteAccount = async (token: string | null) => {
     return error;
   }
 };
+
+export const handleQueries = async () => {
+  try {
+    const response = await axiosInstance.get("admin/get_admin_workshop_queries");
+    return response.data
+  } catch (error) {
+    return error;
+  }
+};

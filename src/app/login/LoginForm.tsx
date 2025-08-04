@@ -8,10 +8,15 @@ import images from '@/services/images';
 import Image from 'next/image';
 import { customImageLoader } from '@/lib/imageLoader';
 import { loginUser } from './actions';
+import { useAppDispatch } from '@/lib/hooks';
+import { fetchAllAdminData } from '@/lib/features/adminData/adminDataSlice';
 
 const LoginForm = () => {
   const router = useRouter();
   const { loginAuthContext, token, loading } = useAuth();
+
+  const dispatch = useAppDispatch()
+
   const [stage, setStage] = useState<'expand' | 'shrink' | 'done' | 'rightHalf'>('expand');
   const [showImage, setShowImage] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -55,6 +60,7 @@ const LoginForm = () => {
     startTransition(async () => {
       const result = await loginUser({ email, password })
       if (result.success && result.token) {
+        await dispatch(fetchAllAdminData())
         loginAuthContext(result.token)
       } else {
         alert("Something went wrong. Please try again!")
@@ -114,7 +120,7 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit} className='w-full flex flex-row'>
             <motion.div
               initial={{ opacity: 0, y: 300 }}
-              animate={{ opacity: 1, y: 0 }}   
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
               className='flex flex-col w-full h-full'>
               <motion.div
