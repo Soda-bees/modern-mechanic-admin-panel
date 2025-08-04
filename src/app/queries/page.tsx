@@ -1,6 +1,5 @@
 "use client";
 
-import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import { useSearch } from "@/context/SearchContext";
 import { useEffect, useState } from "react";
@@ -60,35 +59,6 @@ export default function Queries() {
   );
 
   return (
-    // <ProtectedRoute>
-    //   <div className="w-full px-4 sm:px-6 py-6">
-    //     <PageHeader title="Queries" showFilter={false} />
-
-    //     <p className="text-sm text-grey mt-2">
-    //       Here’s what your users are saying. Stay ahead. Stay helpful.
-    //     </p>
-
-    //     <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-    //       {dummyMessages.map((msg, index) => (
-    //         <div
-    //           key={index}
-    //           className="bg-gray-100 rounded-lg p-4 shadow-sm text-left hover:shadow-md transition duration-200"
-    //         >
-    //           <p className="text-xs text-lightGrey">{msg.date}</p>
-    //           <h2 className="text-xl font-semibold text-gray-800 mt-1">
-    //             {msg.name}
-    //           </h2>
-    //           <p className="text-sm text-lightGrey mb-2 break-words">{msg.email}</p>
-
-    //           <p className="text-sm text-lightGrey mb-1">Message</p>
-    //           <p className="text-sm text-black break-words font-medium">{msg.message}</p>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </div>
-    // </ProtectedRoute>
-
-    <ProtectedRoute>
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
           title="Queries"
@@ -256,6 +226,5 @@ export default function Queries() {
           </div>
         )}
       </div>
-    </ProtectedRoute>
   );
 }

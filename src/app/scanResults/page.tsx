@@ -1,6 +1,5 @@
 "use client";
 
-import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import { useEffect, useState } from "react";
 import images from "@/services/images";
@@ -56,7 +55,6 @@ export default function Scanresults() {
   );
 
   return (
-    <ProtectedRoute>
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader title="Scans" showFilter />
         {loading ? (
@@ -165,6 +163,5 @@ export default function Scanresults() {
           </div>
         )}
       </div>
-    </ProtectedRoute>
   );
 }

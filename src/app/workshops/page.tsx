@@ -71,7 +71,6 @@ export default function Workshops() {
   }
 
   return (
-    <ProtectedRoute>
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
           title="Workshops"
@@ -129,8 +128,7 @@ export default function Workshops() {
             </div>
           )}
         </div>
-      </div>
       {visibleModal && <AddWorkshopModal getWorkshop={getWorkshop} setIsOpen={setVisibleModal} />}
-    </ProtectedRoute>
+      </div>
   );
 }

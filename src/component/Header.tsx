@@ -1,27 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useActionState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import images from '@/services/images';
 import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useSearch } from '@/context/SearchContext';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useAppDispatch } from '@/lib/hooks';
-// import { clearUsers } from '@/lib/features/adminData/adminDataSlice';
+import { logout } from '@/app/actions/auth';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+    const [state, action, pending] = useActionState(logout, undefined);
 
     const dispatch = useAppDispatch()
-
-    const pathname = usePathname();
     const { search, setSearch } = useSearch();
-    const { logoutAuthContext } = useAuth();
+    const pathname = usePathname();
 
-    const handleLogout = async () => {
-        // dispatch(clearUsers())
-        logoutAuthContext()
+    if (pathname === '/login') {
+        return null;
     }
 
     return (
@@ -33,16 +30,18 @@ const Header = () => {
                 <div className='flex flex-row items-center sm:hidden'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
                     <h4 className='font-bold text-black'>John Doe</h4>
-                    <motion.button
-                        onClick={handleLogout}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg ml-6'>
-                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
-                        <span className='text-white hidden md:flex'>
-                            Logout
-                        </span>
-                    </motion.button>
+                    <form action={action}>
+                        <motion.button
+                            type='submit'
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.95 }}
+                            className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg ml-6'>
+                            <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
+                            <span className='text-white hidden md:flex'>
+                                {pending ? 'Logging out...' : 'Logout'}
+                            </span>
+                        </motion.button>
+                    </form>
                 </div>
             </div>
             <div className='w-[80%] md:w-[85%] lg:w-[65%] xl:w-[55%] sm:flex flex-row items-center justify-between hidden '>
@@ -55,16 +54,18 @@ const Header = () => {
                 <div className='flex flex-row items-center'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
                     <h4 className='font-bold mr-6 text-black'>John Doe</h4>
-                    <motion.button
-                        onClick={handleLogout}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
-                        <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
-                        <span className='text-white hidden md:flex'>
-                            Logout
-                        </span>
-                    </motion.button>
+                    <form action={action}>
+                        <motion.button
+                            type='submit'
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.95 }}
+                            className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
+                            <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
+                            <span className='text-white hidden md:flex'>
+                                {pending ? 'Logging out...' : 'Logout'}
+                            </span>
+                        </motion.button>
+                    </form>
                 </div>
 
             </div>

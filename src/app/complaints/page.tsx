@@ -1,6 +1,5 @@
 "use client";
 
-import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import images from "@/services/images";
 import { UserIcon } from "@heroicons/react/24/outline";
@@ -59,7 +58,6 @@ export default function Complaints() {
   );
 
   return (
-    <ProtectedRoute>
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
           title="Complaints"
@@ -207,6 +205,5 @@ export default function Complaints() {
           </div>
         )}
       </div>
-    </ProtectedRoute>
   );
 }

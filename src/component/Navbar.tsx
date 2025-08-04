@@ -39,6 +39,10 @@ const Navbar = () => {
     const pathname = usePathname();
     const { search, setSearch } = useSearch();
 
+    if (pathname === '/login') {
+        return null; 
+    }
+
     return (
         <div className="w-full overflow-x-auto scrollbar-hide custom1100:overflow-x-visible custom1100:w-[96%] max-w-[1100px] custom1100:pl-6 sticky top-0">
             <div className="flex flex-row items-center custom1100:justify-evenly bg-headerBG mt-4 w-max min-w-full p-4 rounded-2xl shadow-sm whitespace-nowrap ">

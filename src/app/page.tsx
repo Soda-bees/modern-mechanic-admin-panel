@@ -1,6 +1,5 @@
 "use client";
 
-import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import Image from "next/image";
 import images from "@/services/images";
@@ -10,7 +9,7 @@ import { handleGetSummary } from "@/services/api";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
 import { useAppSelector } from "@/lib/hooks";
-import { selectScans, selectUsers } from "@/lib/features/adminData/adminDataSlice";
+import { selectScans } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {
   const users = useAppSelector(selectScans)
@@ -81,7 +80,6 @@ export default function Overview() {
   }, []);
 
   return (
-    <ProtectedRoute>
       <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
         <PageHeader title="Overview" showFilter={false} />
 
@@ -167,6 +165,5 @@ export default function Overview() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
   );
 }

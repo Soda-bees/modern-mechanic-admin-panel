@@ -3,17 +3,15 @@
 import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import images from '@/services/images';
 import Image from 'next/image';
 import { customImageLoader } from '@/lib/imageLoader';
-import { loginUser } from './actions';
 import { useAppDispatch } from '@/lib/hooks';
 import { fetchAllAdminData } from '@/lib/features/adminData/adminDataSlice';
+import { login } from '../actions/auth';
 
 const LoginForm = () => {
   const router = useRouter();
-  const { loginAuthContext, token, loading } = useAuth();
 
   const dispatch = useAppDispatch()
 
@@ -39,11 +37,6 @@ const LoginForm = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (!loading && token) {
-      router.replace('/');
-    }
-  }, [token, loading, router]);
 
   useEffect(() => {
     const expandTimer = setTimeout(() => setStage('shrink'), 1000);
@@ -58,18 +51,16 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     startTransition(async () => {
-      const result = await loginUser({ email, password })
-      if (result.success && result.token) {
+      const result = await login({ email, password })      
+      if (result.success) {
         await dispatch(fetchAllAdminData())
-        loginAuthContext(result.token)
+        router.push('/')
       } else {
         alert("Something went wrong. Please try again!")
       }
     })
 
   }
-
-  if (loading || token) return null
 
   return (
     <div className="relative w-screen h-screen overflow-hidden flex">

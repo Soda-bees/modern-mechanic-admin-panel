@@ -1,8 +1,8 @@
 import './globals.css';
 import { SearchProvider } from '@/context/SearchContext';
-import AuthLayout from '@/component/AuthLayout';
-import { AuthProvider } from '@/context/AuthContext';
 import StoreProvider from './StoreProvider';
+import Header from '@/component/Header';
+import Navbar from '@/component/Navbar';
 
 export const metadata = {
   title: 'OBD-Admin',
@@ -14,14 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <StoreProvider>
-          <AuthProvider>
-            <SearchProvider>
-              <AuthLayout />
-              <div className=''>
-                {children}
-              </div>
-            </SearchProvider>
-          </AuthProvider>
+          <SearchProvider>
+            <Header />
+            <Navbar />
+            <div className=''>
+              {children}
+            </div>
+          </SearchProvider>
         </StoreProvider>
       </body>
     </html>
