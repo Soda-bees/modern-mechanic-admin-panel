@@ -6,35 +6,26 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import { customImageLoader } from "@/lib/imageLoader";
-import { useEffect, useState } from "react";
-import { handleComplaints } from "@/services/api";
+import { useState } from "react";
 import Loader from "@/component/loader";
 import { useSearch } from "@/context/SearchContext";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchComplaints, selectComplaints, selectLoadings } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Complaints() {
   const { search } = useSearch();
+  const dispatch = useAppDispatch()
 
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const complaints = useAppSelector(selectComplaints)
+  const {loadingComplaint} = useAppSelector(selectLoadings)
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getComplaints = async () => {
-    try {
-      const response = (await handleComplaints()) as GetAllComplaintsResponse;
-      if (response.data.success) {
-        setComplaints(response.data.data);
-      } else {
-        alert("Something went wrong!");
-      }
-    } catch (error) {
-      alert("Something went wrong!");
-    } finally {
-      setLoading(false);
+    if(!loadingComplaint){
+      dispatch(fetchComplaints())
     }
   };
-
-  useEffect(() => {
-    getComplaints();
-  }, []);
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;
@@ -62,7 +53,8 @@ export default function Complaints() {
         <PageHeader
           title="Complaints"
           showFilter
-          onFilterClick={() => alert("filter clicked!")}
+          onFilterClick={getComplaints}
+          isLoading={loadingComplaint}
         />
         {loading ? (
           <div className="mt-6">

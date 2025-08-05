@@ -2,34 +2,25 @@
 
 import { useState } from "react";
 import PageHeader from "@/component/PageHeader";
-import { handleGetAllUser } from "@/services/api";
 import Loader from "@/component/loader";
 import { useSearch } from "@/context/SearchContext";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchUsers, selectLoadings, selectUsers } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Usersmanagement() {
+  const { loadingUser } = useAppSelector(selectLoadings)
   const { search } = useSearch()
+  const dispatch = useAppDispatch()
 
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const users = useAppSelector(selectUsers)
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getUsers = async () => {
-    try {
-      const response = await handleGetAllUser() as GetAllUserResponse
-      if (response?.data?.success) {
-        setUsers(response?.data?.data)
-      } else {
-        alert("Something went wrong!")
-      }
-    } catch (error) {
-      alert("Something went wrong!")
-    } finally {
-      setLoading(false)
+    if (!loadingUser) {
+      dispatch(fetchUsers());
     }
   }
-
-  // useEffect(() => {
-  //   getUsers()
-  // }, [])
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;
@@ -57,6 +48,8 @@ export default function Usersmanagement() {
       <PageHeader
         title="Users Management"
         showFilter
+        onFilterClick={getUsers}
+        isLoading={loadingUser}
       />
       <div className="mt-6">
         {loading ? (

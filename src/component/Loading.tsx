@@ -1,7 +1,6 @@
 'use client';
 
 import images from '@/services/images';
-import { motion } from 'framer-motion';
 
 const Loading = () => {
     return (

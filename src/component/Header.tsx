@@ -9,12 +9,13 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from '@/lib/hooks';
 import { logout } from '@/app/actions/auth';
 import { usePathname } from 'next/navigation';
+import Loading from './Loading';
 
 const Header = () => {
     const [state, action, pending] = useActionState(logout, undefined);
 
     const dispatch = useAppDispatch()
-    const { search, setSearch } = useSearch();
+    const { setSearch } = useSearch();
     const pathname = usePathname();
 
     if (pathname === '/login') {
@@ -38,7 +39,7 @@ const Header = () => {
                             className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg ml-6'>
                             <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
                             <span className='text-white hidden md:flex'>
-                                {pending ? 'Logging out...' : 'Logout'}
+                                {pending ? 'Logout' : 'Logout'}
                             </span>
                         </motion.button>
                     </form>
@@ -62,7 +63,7 @@ const Header = () => {
                             className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
                             <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
                             <span className='text-white hidden md:flex'>
-                                {pending ? 'Logging out...' : 'Logout'}
+                                {pending ? 'Logout' : 'Logout'}
                             </span>
                         </motion.button>
                     </form>

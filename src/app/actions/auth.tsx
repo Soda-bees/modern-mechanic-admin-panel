@@ -2,12 +2,10 @@
 
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers"
 import { handleLogin } from "@/services/api";
 
 export async function login({ email, password }: ILogin) {
     try {
-        const cookieStore = await cookies()
         const body = { email, password }
         const response = await handleLogin(body) as LoginResponse
         if (response?.data?.success) {

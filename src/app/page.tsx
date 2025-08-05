@@ -8,35 +8,35 @@ import { useEffect, useState } from "react";
 import { handleGetSummary } from "@/services/api";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
-import { useAppSelector } from "@/lib/hooks";
-import { selectScans } from "@/lib/features/adminData/adminDataSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { selectAdminData, selectUsers } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {
-  const users = useAppSelector(selectScans)
-  console.log("users=-=--=-=>", users);
+  const dispatch = useAppDispatch()
+  const { users, scans, complaints, workshops } = useAppSelector(selectAdminData);
 
   const [summaryCards, setSummaryCards] = useState([
     {
       title: "Total Users",
-      value: "0",
+      value: users?.length.toString() || "0",
       subtitle: "See who’s driving with us.",
       icon: images.Users,
     },
     {
       title: "Total Workshops",
-      value: "0",
+      value: workshops?.length.toString() || "0",
       subtitle: "Verified garages in our network.",
       icon: images.Workshops,
     },
     {
       title: "Scans",
-      value: "0",
+      value: scans?.length.toString() || "0",
       subtitle: "Every scan makes a car smarter.",
       icon: images.Scan,
     },
     {
       title: "Complaints",
-      value: "0",
+      value: complaints?.length.toString() || "0",
       subtitle: "User voices help us improve.",
       icon: images.Complains,
     },
@@ -47,26 +47,6 @@ export default function Overview() {
       const response = (await handleGetSummary()) as GetAllSummaryResponse;
 
       if (response?.success) {
-        // const { total_complaints, total_scans, total_users, total_workshops } =
-        //   response?.data;
-        // setSummaryCards((prev) => [
-        //   {
-        //     ...prev[0],
-        //     value: total_users.toString(),
-        //   },
-        //   {
-        //     ...prev[1],
-        //     value: total_workshops.toString(),
-        //   },
-        //   {
-        //     ...prev[2],
-        //     value: total_scans.toString(),
-        //   },
-        //   {
-        //     ...prev[3],
-        //     value: total_complaints.toString(),
-        //   },
-        // ]);
       } else {
         alert("Something went wrong.");
       }
@@ -75,95 +55,91 @@ export default function Overview() {
     }
   };
 
-  useEffect(() => {
-    getAllSummary();
-  }, []);
-
   return (
-      <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
-        <PageHeader title="Overview" showFilter={false} />
+    <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
+      <PageHeader title="Overview" showFilter-={false} />
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          {summaryCards.map((item, i) => (
-            <div
-              key={i}
-              className="bg-headerBG rounded-xl p-4 flex flex-col gap-2 shadow-sm"
-            >
-              <div className="flex flex-row justify-between items-center">
-                <div className="w-10 h-10 relative bg-lightOrange rounded-full flex items-center justify-center">
-                  <Image
-                    loader={customImageLoader}
-                    src={item.icon}
-                    alt={item.title}
-                    width={20}
-                    height={20}
-                    className="object-contain"
-                  />
-                </div>
-                <h2 className="text-2xl lg:text-3xl font-semibold text-black">
-                  {item.value}
-                </h2>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        {summaryCards.map((item, i) => (
+          <div
+            key={i}
+            className="bg-headerBG rounded-xl p-4 flex flex-col gap-2 shadow-sm"
+          >
+            <div className="flex flex-row justify-between items-center">
+              <div className="w-10 h-10 relative bg-lightOrange rounded-full flex items-center justify-center">
+                <Image
+                  loader={customImageLoader}
+                  src={item.icon}
+                  alt={item.title}
+                  width={20}
+                  height={20}
+                  className="object-contain"
+                />
               </div>
-              <p className="text-lg sm:text-xl font-medium text-black font-semibold">
-                {item.title}
-              </p>
-              <p className="text-xs sm:text-sm text-grey">{item.subtitle}</p>
+              <h2 className="text-2xl lg:text-3xl font-semibold text-black">
+                {item.value}
+              </h2>
             </div>
-          ))}
-        </div>
+            <p className="text-lg sm:text-xl font-medium text-black font-semibold">
+              {item.title}
+            </p>
+            <p className="text-xs sm:text-sm text-grey">{item.subtitle}</p>
+          </div>
+        ))}
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 overflow-hidden">
-          <div className="bg-headerBG rounded-xl sm:p-6 shadow-sm p-1">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 p-3">
-              <div>
-                <p className="text-sm text-anotherGrey">Scan</p>
-                <h3 className="text-2xl sm:text-3xl font-semibold text-black">
-                  Scan Activity Report
-                </h3>
-              </div>
-              <div className="relative inline-block w-fit">
-                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
-                  <option>Daily</option>
-                  <option>Weekly</option>
-                </select>
-                <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-grey">
-                  ▾
-                </div>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 overflow-hidden">
+        <div className="bg-headerBG rounded-xl sm:p-6 shadow-sm p-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 p-3">
+            <div>
+              <p className="text-sm text-anotherGrey">Scan</p>
+              <h3 className="text-2xl sm:text-3xl font-semibold text-black">
+                Scan Activity Report
+              </h3>
             </div>
-            <div className="mt-5 w-full overflow-x-auto">
-              <div className="min-w-[600px]">
-                <ScanBarChart />
+            <div className="relative inline-block w-fit">
+              <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
+                <option>Daily</option>
+                <option>Weekly</option>
+              </select>
+              <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-grey">
+                ▾
               </div>
             </div>
           </div>
+          <div className="mt-5 w-full overflow-x-auto">
+            <div className="min-w-[600px]">
+              <ScanBarChart />
+            </div>
+          </div>
+        </div>
 
-          <div className="flex flex-col justify-between bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <div>
-                <p className="text-sm text-anotherGrey">Total Users</p>
-                <h3 className="text-2xl sm:text-3xl font-semibold text-black">
-                  2,340
-                </h3>
-              </div>
-              <div className="relative inline-block w-fit ">
-                <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
-                  <option>Monthly</option>
-                  <option>Quarterly</option>
-                </select>
-                <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-grey">
-                  ▾
-                </div>
+        <div className="flex flex-col justify-between bg-headerBG rounded-xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <p className="text-sm text-anotherGrey">Total Users</p>
+              <h3 className="text-2xl sm:text-3xl font-semibold text-black">
+                2,340
+              </h3>
+            </div>
+            <div className="relative inline-block w-fit ">
+              <select className="appearance-none text-sm pl-3 pr-6 py-1.5 border border-grey rounded-lg bg-headerBG text-grey cursor-pointer">
+                <option>Monthly</option>
+                <option>Quarterly</option>
+              </select>
+              <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-grey">
+                ▾
               </div>
             </div>
-            <div className="w-full overflow-x-auto mt-5">
-              <div className="min-w-[600px]">
-                <LineChartComponent />
-              </div>
+          </div>
+          <div className="w-full overflow-x-auto mt-5">
+            <div className="min-w-[600px]">
+              <LineChartComponent />
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 }

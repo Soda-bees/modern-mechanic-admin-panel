@@ -1,4 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
+import { APIError } from "@/types/error";
+import axios from "axios";
 
 export const handleLogin = async (body: ILogin) => {
   try {
@@ -9,12 +11,15 @@ export const handleLogin = async (body: ILogin) => {
   }
 };
 
-export const handleGetAllUser = async () => {
+export const handleGetAllUser = async (): Promise<GetAllUserResponse> => {
   try {
-    const response = await axiosInstance.get("admin/getAllUsers");
-    return response;
+    const response = await axiosInstance.get<GetAllUserResponse>("admin/getAllUsers")
+    return response.data
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      throw error as APIError;
+    }
+    throw new Error("Unexpected error occurred");
   }
 };
 
@@ -43,30 +48,39 @@ export const handleAddWorkshop = async (body: addWorkshopform) => {
   }
 };
 
-export const handleGetAllWorkshop = async () => {
+export const handleGetAllWorkshop = async ():Promise<getAllWorkshopResponse> => {
   try {
-    const response = await axiosInstance.get("admin/adminGetAllWorkshops");
-    return response;
+    const response = await axiosInstance.get<getAllWorkshopResponse>("admin/adminGetAllWorkshops");
+    return response.data;
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      throw error as APIError;
+    }
+    throw new Error("Unexpected error occurred");
   }
 };
 
-export const handleScanResult = async () => {
+export const handleScanResult = async (): Promise<GetAllScanResponse> => {
   try {
-    const response = await axiosInstance.get("admin/getAllScans");
-    return response;
+    const response = await axiosInstance.get<GetAllScanResponse>("admin/getAllScans");
+    return response.data;
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      throw error as APIError;
+    }
+    throw new Error("Unexpected error occurred");
   }
 };
 
-export const handleComplaints = async () => {
+export const handleComplaints = async (): Promise<GetAllComplaintsResponse> => {
   try {
-    const response = await axiosInstance.get("admin/getAllComplaints");
-    return response;
+    const response = await axiosInstance.get<GetAllComplaintsResponse>("admin/getAllComplaints");
+    return response.data;
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      throw error as APIError;
+    }
+    throw new Error("Unexpected error occurred");
   }
 };
 
@@ -125,8 +139,8 @@ export const deleteWorkshop = async (id: string) => {
 }
 
 export const handleEditWorkshop = async (body: addWorkshopform) => {
-  console.log("workshop id" , body.id);
-  
+  console.log("workshop id", body.id);
+
   try {
     const response = await axiosInstance.put(`admin/edit_workshop/${body.id}`, body)
     return response
@@ -162,11 +176,14 @@ export const handleDeleteAccount = async (token: string | null) => {
   }
 };
 
-export const handleQueries = async () => {
+export const handleQueries = async (): Promise<GetQueriesResponse> => {
   try {
-    const response = await axiosInstance.get("admin/get_admin_workshop_queries");
+    const response = await axiosInstance.get<GetQueriesResponse>("admin/get_admin_workshop_queries");
     return response.data
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      throw error as APIError;
+    }
+    throw new Error("Unexpected error occurred");
   }
 };

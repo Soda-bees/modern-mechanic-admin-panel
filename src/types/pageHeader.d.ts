@@ -5,4 +5,5 @@ interface PageHeaderProps {
     onFilterClick?: () => void;
     addShowButton?: boolean;
     onAddShowClick?: () => void;
+    isLoading?:boolean
 }

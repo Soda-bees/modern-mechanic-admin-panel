@@ -15,11 +15,11 @@ type LoginResponse = {
 };
 
 type GetAllUserResponse = {
-  data: {
+
     message: string;
     success: boolean;
     data: User[];
-  };
+
 };
 
 type uploadImg = {
@@ -39,27 +39,21 @@ type addWorkshopResponse = {
 };
 
 type getAllWorkshopResponse = {
-  data: {
     message: string;
     success: boolean;
     data: IWorkshop[];
-  };
 };
 
 type GetAllScanResponse = {
-  data: {
     message: string;
     success: boolean;
     data: Scan[];
-  };
 };
 
 type GetAllComplaintsResponse = {
-  data: {
     message: string;
     success: boolean;
     data: Complaint[];
-  };
 };
 
 type GetAllSummaryResponse = {
@@ -87,7 +81,7 @@ type DeleteWorkshopResponse = {
 }
 
 type GetQueriesResponse = {
-  message: string;
-  success: boolean;
-  queries: Queries[];
+    message: string;
+    success: boolean;
+    queries: Queries[];
 };

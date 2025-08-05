@@ -10,32 +10,36 @@ import Image from "next/image";
 import images from "@/services/images";
 import { customImageLoader } from "@/lib/imageLoader";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchQueries, selectLoadings, selectQueries } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Queries() {
   const { search } = useSearch();
+  const queries = useAppSelector(selectQueries)
+  const dispatch = useAppDispatch()
+  const {loadingQuery} = useAppSelector(selectLoadings)
 
-  const [queries, setQueries] = useState<Queries[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [queries, setQueries] = useState<Queries[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getQueries = async () => {
-    try {
-      const response = await handleQueries() as GetQueriesResponse;
-      console.log("response gueries", response);
-      if (response?.success) {
-        setQueries(response?.queries);
-      } else {
-        alert("Something went wrong!");
-      }
-    } catch (error) {
-      alert("Something went wrong!");
-    } finally {
-      setLoading(false);
+    if(!loadingQuery){
+      dispatch(fetchQueries())
     }
+    // try {
+    //   const response = await handleQueries() as GetQueriesResponse;
+    //   console.log("response gueries", response);
+    //   if (response?.data?.success) {
+    //     setQueries(response?.data?.queries);
+    //   } else {
+    //     alert("Something went wrong!");
+    //   }
+    // } catch (error) {
+    //   alert("Something went wrong!");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
-
-  useEffect(() => {
-    getQueries()
-  }, [])
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;
@@ -63,7 +67,8 @@ export default function Queries() {
         <PageHeader
           title="Queries"
           showFilter
-          onFilterClick={() => alert("filter clicked!")}
+          onFilterClick={getQueries}
+          isLoading={loadingQuery}
         />
         {loading ? (
           <div className="mt-6">
