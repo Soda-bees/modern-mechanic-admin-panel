@@ -57,14 +57,11 @@ type GetAllComplaintsResponse = {
 };
 
 type GetAllSummaryResponse = {
-  message: string;
-  success: boolean;
-  data: {
-    total_complaints: number;
-    total_scans: number;
-    total_users: number;
-    total_workshops: number;
-  };
+    total_complaints: Complaint[];
+    total_scans: Scan[];
+    total_users: User[];
+    total_workshops: IWorkshop[];
+    total_queries:Queries[]
 };
 
 type GetUserDeleteResponse = {

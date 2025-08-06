@@ -11,14 +11,14 @@ import { logout } from '@/app/actions/auth';
 import { usePathname } from 'next/navigation';
 import Loading from './Loading';
 
-const Header = () => {
+const Header = ({ token }: { token: string | null | undefined}) => {
     const [state, action, pending] = useActionState(logout, undefined);
 
     const dispatch = useAppDispatch()
     const { setSearch } = useSearch();
     const pathname = usePathname();
 
-    if (pathname === '/login') {
+    if (!token) {
         return null;
     }
 

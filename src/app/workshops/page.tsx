@@ -1,6 +1,5 @@
 "use client";
 
-import ProtectedRoute from "@/component/ProtectedRoute";
 import PageHeader from "@/component/PageHeader";
 import { useEffect, useState } from "react";
 import AddWorkshopModal from "@/component/AddWorkshopModal";

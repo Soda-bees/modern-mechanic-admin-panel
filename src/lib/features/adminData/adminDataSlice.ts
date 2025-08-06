@@ -1,18 +1,24 @@
 import { RootState } from '@/lib/store';
 import { handleComplaints, handleGetAllUser, handleGetAllWorkshop, handleGetSummary, handleQueries, handleScanResult } from '@/services/api';
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 
-export const fetchAllAdminData = createAsyncThunk(
-    'adminData/fetchAll',
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await handleGetSummary() as GetAllSummaryResponse;
-            return response?.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data || 'Something went wrong');
+export const fetchAllAdminData = createAsyncThunk<
+    GetAllSummaryResponse,
+    void,
+    { rejectValue: string }>(
+        'adminData/fetchAll',
+        async (_, { rejectWithValue }) => {
+            try {
+                const response = await handleGetSummary()
+                return response?.data as GetAllSummaryResponse;
+            } catch (error) {
+                if (error instanceof Error) {
+                    return rejectWithValue(error.message);
+                }
+                return rejectWithValue("Something went wrong");
+            }
         }
-    }
-);
+    );
 
 
 export function createFetchThunk<T, R>(
@@ -26,8 +32,11 @@ export function createFetchThunk<T, R>(
             try {
                 const response = await apiFn();
                 return selector(response);
-            } catch (error: any) {
-                return rejectWithValue(error.response?.data || 'Something went wrong');
+            } catch (error) {
+                if (error instanceof Error) {
+                    return rejectWithValue(error.message);
+                }
+                return rejectWithValue("Something went wrong");
             }
         }
     );
@@ -83,27 +92,29 @@ export const adminDataSlice = createSlice({
                 state.workshops.error = null;
                 state.queries.error = null;
             })
-            .addCase(fetchAllAdminData.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(fetchAllAdminData.fulfilled, (state, action) => {
+                const { total_users, total_scans, total_complaints, total_workshops, total_queries } = action.payload;
+                state.users.data = total_users;
+                state.scans.data = total_scans;
+                state.complaints.data = total_complaints;
+                state.workshops.data = total_workshops;
+                state.queries.data = total_queries;
+
                 state.users.loading = false;
                 state.scans.loading = false;
                 state.complaints.loading = false;
                 state.workshops.loading = false;
                 state.queries.loading = false;
 
-                state.users.data = action.payload.total_users;
-                state.scans.data = action.payload.total_scans;
-                state.complaints.data = action.payload.total_complaints;
-                state.workshops.data = action.payload.total_workshops;
-                state.queries.data = action.payload.total_queries;
             })
-            .addCase(fetchAllAdminData.rejected, (state, action: PayloadAction<any>) => {
+            .addCase(fetchAllAdminData.rejected, (state, action) => {
                 state.users.loading = false;
                 state.scans.loading = false;
                 state.complaints.loading = false;
                 state.workshops.loading = false;
                 state.queries.loading = false;
 
-                const errorMessage = action.payload || 'Something went wrong';
+                const errorMessage = action.payload ?? "Something went wrong";
                 state.users.error = errorMessage;
                 state.scans.error = errorMessage;
                 state.complaints.error = errorMessage;
@@ -121,8 +132,9 @@ export const adminDataSlice = createSlice({
                     state[key].data = action.payload;
                 })
                 .addCase(thunk.rejected, (state, action) => {
+                    const errorMessage = action.payload ?? "Something went wrong";
                     state[key].loading = false;
-                    state[key].error = action.payload as string;
+                    state[key].error = errorMessage
                 });
         });
     },
