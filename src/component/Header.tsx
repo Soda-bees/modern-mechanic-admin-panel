@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { useActionState, useRef } from 'react';
 import Link from 'next/link';
 import images from '@/services/images';
 import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
@@ -8,18 +8,34 @@ import { useSearch } from '@/context/SearchContext';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '@/lib/hooks';
 import { logout } from '@/app/actions/auth';
-import { usePathname } from 'next/navigation';
-import Loading from './Loading';
+import { clearAdminData } from '@/lib/features/adminData/adminDataSlice';
 
-const Header = ({ token }: { token: string | null | undefined}) => {
+const Header = ({ token }: { token: string | null | undefined }) => {
     const [state, action, pending] = useActionState(logout, undefined);
+
+    const formRef = useRef<HTMLFormElement>(null);
 
     const dispatch = useAppDispatch()
     const { setSearch } = useSearch();
-    const pathname = usePathname();
 
     if (!token) {
         return null;
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // 🔹 Perform your custom logic here
+        console.log('Running logic before logout...');
+        // e.g., localStorage.clear(), analytics(), etc.
+
+        // 🔹 Now manually submit the form
+        formRef.current?.submit();
+        // dispatch(clearAdminData())
+    };
+
+    const handlePreLogout = async () => {
+        dispatch(clearAdminData())
     }
 
     return (
@@ -31,7 +47,7 @@ const Header = ({ token }: { token: string | null | undefined}) => {
                 <div className='flex flex-row items-center sm:hidden'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
                     <h4 className='font-bold text-black'>John Doe</h4>
-                    <form action={action}>
+                    <form ref={formRef} action={action} onSubmit={handleSubmit}>
                         <motion.button
                             type='submit'
                             whileHover={{ scale: 1.02 }}
@@ -55,7 +71,10 @@ const Header = ({ token }: { token: string | null | undefined}) => {
                 <div className='flex flex-row items-center'>
                     <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
                     <h4 className='font-bold mr-6 text-black'>John Doe</h4>
-                    <form action={action}>
+                    <form action={async () => {
+                        handlePreLogout();
+                        return await action();
+                    }}>
                         <motion.button
                             type='submit'
                             whileHover={{ scale: 1.02 }}
@@ -63,7 +82,7 @@ const Header = ({ token }: { token: string | null | undefined}) => {
                             className='flex flex-row items-center justify-center cursor-pointer bg-orange px-2 py-1 rounded-lg'>
                             <ArrowLeftEndOnRectangleIcon className="w-6 h-6 text-white cursor-pointer md:mr-2" />
                             <span className='text-white hidden md:flex'>
-                                {pending ? 'Logout' : 'Logout'}
+                                {pending ? 'Logging out...' : 'Logout'}
                             </span>
                         </motion.button>
                     </form>

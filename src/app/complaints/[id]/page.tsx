@@ -1,4 +1,3 @@
-import { handleGetComplaintDetail } from "@/services/api";
 import ComplaintDetailclient from "./complaintDetail";
 
 export default async function SingleComplaint({

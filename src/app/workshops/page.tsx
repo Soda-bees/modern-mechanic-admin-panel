@@ -4,7 +4,6 @@ import PageHeader from "@/component/PageHeader";
 import { useEffect, useState } from "react";
 import AddWorkshopModal from "@/component/AddWorkshopModal";
 import Link from "next/link";
-import { handleGetAllWorkshop } from "@/services/api";
 import { useSearch } from "@/context/SearchContext";
 import Loader from "@/component/loader";
 import Image from "next/image";

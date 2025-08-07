@@ -52,10 +52,10 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
-      const result = await login({ email, password });
+      const result = await login({ email, password })
       if (result.success) {
-        router.push("/");
-        dispatch(fetchAllAdminData());
+        dispatch(fetchAllAdminData())
+        router.push('/')
       } else {
         alert("Something went wrong. Please try again!");
       }

@@ -70,6 +70,7 @@ export const adminDataSlice = createSlice({
     initialState,
     reducers: {
         clearAdminData: (state) => {
+            console.log("clear admin data redux");
             state.users = { data: [], loading: false, error: null };
             state.scans = { data: [], loading: false, error: null };
             state.complaints = { data: [], loading: false, error: null };
@@ -109,12 +110,13 @@ export const adminDataSlice = createSlice({
                 state.queries.error = null;
             })
             .addCase(fetchAllAdminData.fulfilled, (state, action) => {
-                const { total_users, total_scans, total_complaints, total_workshops, total_queries } = action.payload;
-                state.users.data = total_users;
-                state.scans.data = total_scans;
-                state.complaints.data = total_complaints;
-                state.workshops.data = total_workshops;
-                state.queries.data = total_queries;
+                console.log("action.payload redux ====>", action.payload);
+
+                state.users.data = action.payload?.total_users || [];
+                state.scans.data = action.payload?.total_scans || [];
+                state.complaints.data = action.payload?.total_complaints || [];
+                state.workshops.data = action.payload?.total_workshops || [];
+                state.queries.data = action.payload?.total_queries || [];
 
                 state.users.loading = false;
                 state.scans.loading = false;
