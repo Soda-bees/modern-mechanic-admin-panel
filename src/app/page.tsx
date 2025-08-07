@@ -11,30 +11,31 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAdminData } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {
-  const { users, scans, complaints, workshops } = useAppSelector(selectAdminData);
+  const { users, scans, complaints, workshops } =
+    useAppSelector(selectAdminData);
 
   const [summaryCards, setSummaryCards] = useState([
     {
       title: "Total Users",
-      value: users?.length.toString() || "0",
+      value: users?.length || 0,
       subtitle: "See who’s driving with us.",
       icon: images.Users,
     },
     {
       title: "Total Workshops",
-      value: workshops?.length.toString() || "0",
+      value: workshops?.length || 0,
       subtitle: "Verified garages in our network.",
       icon: images.Workshops,
     },
     {
       title: "Scans",
-      value: scans?.length.toString() || "0",
+      value: scans?.length || 0,
       subtitle: "Every scan makes a car smarter.",
       icon: images.Scan,
     },
     {
       title: "Complaints",
-      value: complaints?.length.toString() || "0",
+      value: complaints?.length || 0,
       subtitle: "User voices help us improve.",
       icon: images.Complains,
     },
