@@ -9,13 +9,14 @@ import { useSearch } from "@/context/SearchContext";
 import Loader from "@/component/loader";
 import Image from "next/image";
 import { customImageLoader } from "@/lib/imageLoader";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchWorkshops, selectLoadings, selectWorkshops } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Workshops() {
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const workshops = useAppSelector(selectWorkshops)
   const { loadingWorkshop } = useAppSelector(selectLoadings)
@@ -24,6 +25,14 @@ export default function Workshops() {
 
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(false)
+
+  const value = searchParams.get('modal')
+
+  useEffect(() => {
+      if (value === "add") {
+        setVisibleModal(true);
+      }
+    }, [value]);
 
   const getWorkshop = async () => {
     if (!loadingWorkshop) {
@@ -54,9 +63,6 @@ export default function Workshops() {
 
   const handleOpenModal = async () => {
     router.push("?modal=add");
-    setTimeout(() => {
-      setVisibleModal(true);
-    }, 100);
   }
 
   return (
@@ -119,7 +125,7 @@ export default function Workshops() {
           </div>
         )}
       </div>
-      {visibleModal && <AddWorkshopModal getWorkshop={getWorkshop} setIsOpen={setVisibleModal} />}
+      {visibleModal && <AddWorkshopModal setIsOpen={setVisibleModal} />}
     </div>
   );
 }

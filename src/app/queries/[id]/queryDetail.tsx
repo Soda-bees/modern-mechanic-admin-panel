@@ -109,10 +109,6 @@ export default function QueryDetailclient({ id }: { id: string }) {
                                    {scan.description}
                                 </span>
                             </p>
-                            {/* <p className="text-sm text-gray-800 font-medium">
-                  Estimated Cost: <br />
-                  <span className="font-semibold">From $1,500 to $15,000+</span>
-                </p> */}
                         </div>
                     ))}
                 </div>

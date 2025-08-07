@@ -7,10 +7,13 @@ import { handleAddWorkshop, handleEditWorkshop, uploadWorkshopImg } from "@/serv
 import Loader from "./loader";
 import SimpleButton from "./simpleButton";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { addNewWorkshopRedux, editWorkshopRedux } from "@/lib/features/adminData/adminDataSlice";
 
-export default function AddWorkshopModal({ setIsOpen, getWorkshop, workshop }: Props) {
+export default function AddWorkshopModal({ setIsOpen, workshop }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const value = searchParams.get('modal')
 
@@ -136,10 +139,11 @@ export default function AddWorkshopModal({ setIsOpen, getWorkshop, workshop }: P
       }
       const response = await handleAddWorkshop(updatedForm) as addWorkshopResponse
       if (response?.data?.success) {
+        dispatch(addNewWorkshopRedux({ workshop: response?.data?.data }))
         alert('Workshop added successfully!')
-        if (getWorkshop) {
-          getWorkshop()
-        }
+        // if (getWorkshop) {
+        //   getWorkshop()
+        // }
         setIsOpen(false)
       } else {
         alert("Something went wrong. Please try again!")
@@ -169,9 +173,10 @@ export default function AddWorkshopModal({ setIsOpen, getWorkshop, workshop }: P
         id: workshopId
       }
       const response = await handleEditWorkshop(updatedForm) as addWorkshopResponse
-      if(response?.data?.success){
+      if (response?.data?.success) {
+        dispatch(editWorkshopRedux({ workshop: response?.data?.data }))
         setForm
-        alert('Workshop added successfully!')
+        alert('Workshop edit successfully!')
         setIsAdd(null)
         setShowModal(false)
         setTimeout(() => setIsOpen(false), 200);

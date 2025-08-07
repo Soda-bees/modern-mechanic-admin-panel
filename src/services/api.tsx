@@ -139,8 +139,6 @@ export const deleteWorkshop = async (id: string) => {
 }
 
 export const handleEditWorkshop = async (body: addWorkshopform) => {
-  console.log("workshop id", body.id);
-
   try {
     const response = await axiosInstance.put(`admin/edit_workshop/${body.id}`, body)
     return response

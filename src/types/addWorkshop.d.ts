@@ -1,6 +1,5 @@
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    getWorkshop?: () => Promise<void>;
     workshop?:IWorkshop
 };
 

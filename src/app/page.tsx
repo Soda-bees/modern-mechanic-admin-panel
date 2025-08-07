@@ -4,15 +4,13 @@ import PageHeader from "@/component/PageHeader";
 import Image from "next/image";
 import images from "@/services/images";
 import { customImageLoader } from "@/lib/imageLoader";
-import { useEffect, useState } from "react";
-import { handleGetSummary } from "@/services/api";
+import { useState } from "react";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectAdminData, selectUsers } from "@/lib/features/adminData/adminDataSlice";
+import { selectAdminData } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {
-  const dispatch = useAppDispatch()
   const { users, scans, complaints, workshops } = useAppSelector(selectAdminData);
 
   const [summaryCards, setSummaryCards] = useState([
@@ -42,24 +40,10 @@ export default function Overview() {
     },
   ]);
 
-  const getAllSummary = async () => {
-    try {
-      const response = (await handleGetSummary()) as GetAllSummaryResponse;
-
-      if (response?.success) {
-      } else {
-        alert("Something went wrong.");
-      }
-    } catch (error) {
-      alert("Something went wrong.");
-    }
-  };
-
   return (
     <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
       <PageHeader title="Overview" showFilter-={false} />
 
-      {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         {summaryCards.map((item, i) => (
           <div

@@ -76,6 +76,22 @@ export const adminDataSlice = createSlice({
             state.workshops = { data: [], loading: false, error: null };
             state.queries = { data: [], loading: false, error: null };
         },
+        deleteWorkshopRedux: (state, action) => {
+            const { id } = action.payload;
+            state.workshops.data = state.workshops.data.filter(
+                (workshop: IWorkshop) => workshop.id !== id
+            );
+        },
+        editWorkshopRedux: (state, action) => {
+            const { workshop } = action.payload
+            state.workshops.data = state.workshops.data.map((item: IWorkshop) =>
+                item.id === workshop.id ? workshop : item
+            )
+        },
+        addNewWorkshopRedux: (state, action) => {
+            const { workshop } = action.payload
+            state.workshops.data.push(workshop)
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -132,7 +148,7 @@ export const adminDataSlice = createSlice({
                     state[key].data = action.payload;
                 })
                 .addCase(thunk.rejected, (state, action) => {
-                    const errorMessage = action.payload ?? "Something went wrong";
+                    const errorMessage = "Something went wrong";
                     state[key].loading = false;
                     state[key].error = errorMessage
                 });
@@ -177,13 +193,29 @@ export const fetchQueries = createFetchThunk<Queries, GetQueriesResponse>('Queri
 
 type AdminKeys = keyof AdminDataState;
 
-const adminThunks: { key: AdminKeys; thunk: any }[] = [
-    { key: 'users', thunk: fetchUsers },
-    { key: 'scans', thunk: fetchScans },
-    { key: 'complaints', thunk: fetchComplaints },
-    { key: 'workshops', thunk: fetchWorkshops },
-    { key: 'queries', thunk: fetchQueries },
-];
+// const adminThunks: { key: AdminKeys; thunk: any }[] = [
+//     { key: 'users', thunk: fetchUsers },
+//     { key: 'scans', thunk: fetchScans },
+//     { key: 'complaints', thunk: fetchComplaints },
+//     { key: 'workshops', thunk: fetchWorkshops },
+//     { key: 'queries', thunk: fetchQueries },
+// ];
 
-export const { clearAdminData } = adminDataSlice.actions;
+const adminThunks: {
+    key: AdminKeys;
+    thunk:
+    | typeof fetchUsers
+    | typeof fetchScans
+    | typeof fetchComplaints
+    | typeof fetchWorkshops
+    | typeof fetchQueries;
+}[] = [
+        { key: 'users', thunk: fetchUsers },
+        { key: 'scans', thunk: fetchScans },
+        { key: 'complaints', thunk: fetchComplaints },
+        { key: 'workshops', thunk: fetchWorkshops },
+        { key: 'queries', thunk: fetchQueries },
+    ];
+
+export const { clearAdminData, deleteWorkshopRedux, editWorkshopRedux, addNewWorkshopRedux } = adminDataSlice.actions;
 export default adminDataSlice.reducer;

@@ -1,24 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import ConformationModal from "@/component/conformationModal";
 import { customImageLoader } from "@/lib/imageLoader";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteWorkshop } from "@/services/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AddWorkshopModal from "@/component/AddWorkshopModal";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { deleteWorkshopRedux, selectWorkshops } from "@/lib/features/adminData/adminDataSlice";
 
-export default function WorkshopDetailsClient({ workshop }: { workshop: IWorkshop }) {
+export default function WorkshopDetailsClient({ id }: { id: string }) {
+    const searchParams = useSearchParams();
     const router = useRouter();
+    const dispatch = useAppDispatch()
+    const workshops = useAppSelector(selectWorkshops)
+    const workshop = workshops.find((item: IWorkshop) => item.id === Number(id)) || null;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
 
+    const value = searchParams.get('modal')
+
+    useEffect(() => {
+        if (value === "edit") {
+          setIsEditModalVisible(true);
+        }
+      }, [value]);
+
     const handleDeleteWorkshop = async () => {
         try {
-            const response = await deleteWorkshop(workshop.id.toString()) as DeleteWorkshopResponse
+            const response = await deleteWorkshop(id.toString()) as DeleteWorkshopResponse
             if (response?.success) {
+                dispatch(deleteWorkshopRedux({ id: Number(id) }))
                 setIsModalOpen(false)
                 alert("Workshop deleted successfully.");
                 router.push("/workshops");
@@ -31,17 +46,18 @@ export default function WorkshopDetailsClient({ workshop }: { workshop: IWorksho
     }
 
     const handleOpenModal = async () => {
-        router.push("?modal=edit");
-        setTimeout(() => {
-            setIsEditModalVisible(true);
-        }, 1700);
+        router.push("?modal=edit", { scroll: false });
+    }
+
+    if (!workshop) {
+        return <div className="text-center mt-10">Workshop not found</div>;
     }
 
     return (
         <div className="flex flex-col items-center px-4 py-6">
             <div className="w-full max-w-5xl mb-4 ">
                 <div className="hidden sm:flex justify-start">
-                    <div className="border p-1 rounded-xl w-24 border-borderGray">
+                    <div className="border p-1 rounded-xl w-24 border-borderGray cursor-pointer">
                         <Link href="/workshops" className="text-base text-black font-semibold flex justify-center">
                             〱 Back
                         </Link>
