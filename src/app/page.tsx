@@ -7,7 +7,7 @@ import { customImageLoader } from "@/lib/imageLoader";
 import { useState } from "react";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 import { selectAdminData } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Overview() {

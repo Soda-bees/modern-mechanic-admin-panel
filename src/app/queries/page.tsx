@@ -2,8 +2,7 @@
 
 import PageHeader from "@/component/PageHeader";
 import { useSearch } from "@/context/SearchContext";
-import { useEffect, useState } from "react";
-import { handleQueries } from "@/services/api";
+import { useState } from "react";
 import Loader from "@/component/loader";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
