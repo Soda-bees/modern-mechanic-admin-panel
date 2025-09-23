@@ -14,8 +14,6 @@ export default function QueryDetailclient({ id }: { id: string }) {
     if (!query) {
         return <div className="text-center mt-10">Query not found</div>;
     }
-    console.log(query);
-
     return (
         <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="hidden sm:flex mb-4 border p-1 rounded-xl w-24 border-borderGray cursor-pointer">

@@ -5,5 +5,10 @@ interface PageHeaderProps {
     onFilterClick?: () => void;
     addShowButton?: boolean;
     onAddShowClick?: () => void;
-    isLoading?:boolean
+    isLoading?: boolean;
+    showReload?: boolean,
+    onReloadClick?: () => void;
+    zipcodes?: string[];
+    selectedZips?: string[];
+    onZipSelect?: (zips: string[]) => void;
 }

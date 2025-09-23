@@ -19,8 +19,14 @@ export default function Workshops() {
 
   const workshops = useAppSelector(selectWorkshops)
   const { loadingWorkshop } = useAppSelector(selectLoadings)
-  const { search } = useSearch()
+  const { search, setPlaceholder } = useSearch()
 
+  useEffect(() => {
+    setPlaceholder('Search workshops by name or zip code...');
+    return () => {
+      setPlaceholder("Search...");
+    };
+  }, [setPlaceholder])
 
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(false)
@@ -28,10 +34,10 @@ export default function Workshops() {
   const value = searchParams.get('modal')
 
   useEffect(() => {
-      if (value === "add") {
-        setVisibleModal(true);
-      }
-    }, [value]);
+    if (value === "add") {
+      setVisibleModal(true);
+    }
+  }, [value]);
 
   const getWorkshop = async () => {
     if (!loadingWorkshop) {
@@ -39,7 +45,7 @@ export default function Workshops() {
     }
   }
 
-  const highlightText = (text: string, query: string) => {
+  const highlightText = (text: string, query: string, fontSize: number) => {
     if (!query) return text;
 
     const regex = new RegExp(`(${query})`, "gi");
@@ -47,7 +53,7 @@ export default function Workshops() {
 
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: "yellow" }}>
+        <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: fontSize, color: 'black' }}>
           {part}
         </span>
       ) : (
@@ -57,7 +63,8 @@ export default function Workshops() {
   };
 
   const filteredWorkshop = workshops.filter((workshop) =>
-    workshop.zipcode.toLowerCase().includes(search.toLowerCase())
+    workshop.zipcode.toLowerCase().includes(search.toLowerCase()) ||
+    workshop.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleOpenModal = async () => {
@@ -68,12 +75,12 @@ export default function Workshops() {
     <div className="w-full px-4 sm:px-6 py-6">
       <PageHeader
         title="Workshops"
-        showFilter
+        showReload
         addShowButton
         buttonTitle="+ Add Workshop"
         onAddShowClick={handleOpenModal}
         isLoading={loadingWorkshop}
-        onFilterClick={getWorkshop}
+        onReloadClick={getWorkshop}
       />
       <div className="mt-6">
         {loading ? (
@@ -97,7 +104,8 @@ export default function Workshops() {
                     />
                   </div>
                   <h3 className="mt-2 text-base sm:text-lg font-semibold text-black truncate">
-                    {shop.name}
+                    {highlightText(shop.name, search , 21)}
+                    {/* {shop.name} */}
                   </h3>
                   <p className="text-xs sm:text-sm text-black mt-1 font-semibold truncate">
                     <span className="font-medium">Website:</span> {shop.website_link}
@@ -107,7 +115,7 @@ export default function Workshops() {
                   </p>
                   <p className="text-xs sm:text-sm text-black mb-3 font-semibold truncate">
                     <span className="font-medium">Zipcode:</span>
-                    {highlightText(shop.zipcode, search)}
+                    {highlightText(shop.zipcode, search , 17)}
                   </p>
                   <Link href={`/workshops/${shop.id}`}>
                     <p className="text-black bg-white rounded-xl w-full py-3 text-xs sm:text-sm hover:bg-headerBG transition font-semibold flex justify-center">

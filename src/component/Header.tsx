@@ -3,7 +3,7 @@
 import React, { useActionState, useRef } from 'react';
 import Link from 'next/link';
 import images from '@/services/images';
-import { BellIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon, UserIcon } from '@heroicons/react/24/outline';
 import { useSearch } from '@/context/SearchContext';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '@/lib/hooks';
@@ -16,7 +16,7 @@ const Header = ({ token }: { token: string | null | undefined }) => {
     const formRef = useRef<HTMLFormElement>(null);
 
     const dispatch = useAppDispatch()
-    const { setSearch } = useSearch();
+    const { setSearch, placeholder, search } = useSearch();
 
     if (!token) {
         return null;
@@ -45,8 +45,8 @@ const Header = ({ token }: { token: string | null | undefined }) => {
                     <img src={images.logo} className='w-12 sm:w-18 h-12 sm:h-18 mb-2 sm:mb-0' />
                 </Link>
                 <div className='flex flex-row items-center sm:hidden'>
-                    <BellIcon className="w-6 h-6 text-gray-600 mr-2 cursor-pointer" />
-                    <h4 className='font-bold text-black'>John Doe</h4>
+                    <UserIcon className="w-6 h-6 text-gray-600 mr-1 cursor-pointer" />
+                    <h4 className='font-bold text-black'>Modern Mechanic Admin</h4>
                     <form ref={formRef} action={action} onSubmit={handleSubmit}>
                         <motion.button
                             type='submit'
@@ -66,11 +66,13 @@ const Header = ({ token }: { token: string | null | undefined }) => {
                     <MagnifyingGlassIcon className='w-5 h-5 mr-1 text-grey' />
                     <input
                         className='focus:outline-none text-grey p-1 font-medium w-full'
-                        placeholder='Search...' onChange={(e) => setSearch(e.target.value)} />
+                        placeholder={placeholder} onChange={(e) => setSearch(e.target.value)}
+                        value={search}
+                    />
                 </div>
                 <div className='flex flex-row items-center'>
-                    <BellIcon className="w-6 h-6 text-gray-600 mr-4 cursor-pointer" />
-                    <h4 className='font-bold mr-6 text-black'>John Doe</h4>
+                    <UserIcon className="w-6 h-6 text-gray-600 mr-1 cursor-pointer" />
+                    <h4 className='font-bold mr-6 text-black'>Modern Mechanic Admin</h4>
                     <form action={async () => {
                         handlePreLogout();
                         return await action();
@@ -93,7 +95,9 @@ const Header = ({ token }: { token: string | null | undefined }) => {
                 <MagnifyingGlassIcon className='w-5 h-5 mr-1 text-grey' />
                 <input
                     className='focus:outline-none text-grey p-1 font-medium w-full'
-                    placeholder='Search...' onChange={(e) => setSearch(e.target.value)} />
+                    placeholder={placeholder} onChange={(e) => setSearch(e.target.value)}
+                    value={search}
+                />
             </div>
         </header>
     );

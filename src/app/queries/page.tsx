@@ -2,7 +2,7 @@
 
 import PageHeader from "@/component/PageHeader";
 import { useSearch } from "@/context/SearchContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "@/component/loader";
 import { UserIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -13,12 +13,19 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchQueries, selectLoadings, selectQueries } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Queries() {
-  const { search } = useSearch();
+  const { search, setPlaceholder } = useSearch();
   const queries = useAppSelector(selectQueries)
   const dispatch = useAppDispatch()
   const { loadingQuery } = useAppSelector(selectLoadings)
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setPlaceholder('Search queries by DTC Code...');
+    return () => {
+      setPlaceholder("Search...");
+    };
+  }, [setPlaceholder])
 
   const getQueries = async () => {
     if (!loadingQuery) {
@@ -34,7 +41,7 @@ export default function Queries() {
 
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: "yellow" }}>
+        <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: 16, color: 'black' }}>
           {part}
         </span>
       ) : (
@@ -44,15 +51,17 @@ export default function Queries() {
   };
 
   const filteredqueries = queries.filter((querie) =>
-    querie.workshop.name.toLowerCase().includes(search.toLowerCase())
+    querie.scans.some((scan) =>
+      scan.dtc_code.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
   return (
     <div className="w-full px-4 sm:px-6 py-6">
       <PageHeader
         title="Queries"
-        showFilter
-        onFilterClick={getQueries}
+        showReload
+        onReloadClick={getQueries}
         isLoading={loadingQuery}
       />
       {loading ? (
@@ -60,7 +69,7 @@ export default function Queries() {
           <Loader />
         </div>
       ) : filteredqueries.length === 0 ? (
-        <p className="text-center text-gray-500 mt-8">No Queries found.</p>
+        <p className="text-center text-gray-500 mt-8 text-xl">We couldn’t find any queries for this DTC code.</p>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           {filteredqueries.map((querie: Queries, index: number) => (
@@ -68,7 +77,7 @@ export default function Queries() {
               key={index}
               className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-4"
             >
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-center">
                 <div>
                   <p className="text-base font-semibold text-black">
                     Querie
@@ -122,18 +131,24 @@ export default function Queries() {
                     </span>{" "}
                     User Information:
                   </h4>
-                  <p className="text-sm text-black">Name:</p>
-                  <p className="text-sm text-black font-semibold">
-                    {querie.full_name}
-                  </p>
-                  <p className="text-sm text-black">Email:</p>
-                  <p className="text-sm text-black font-semibold">
-                    {querie.email}
-                  </p>
-                  <p className="text-sm text-black">Phone:</p>
-                  <p className="text-sm text-black font-semibold">
-                    {querie.phone_number}
-                  </p>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Name:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.full_name}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Email:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.email}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Phone:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.phone_number}
+                    </p>
+                  </div>
                 </div>
                 <div className="space-y-1">
                   <h4 className="text-sm font-medium text-black flex items-center gap-2">
@@ -148,17 +163,33 @@ export default function Queries() {
                     </span>{" "}
                     Workshop Information:
                   </h4>
-                  <p className="text-sm text-black">Name:</p>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Name:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.name}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Email:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.email}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="text-sm text-black mr-1">Phone:</p>
+                    <p className="text-sm text-black font-semibold">
+                      {querie.workshop.phone_number}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="text-sm text-black mr-1">DTC Codes:</div>
                   <p className="text-sm text-black font-semibold">
-                    {highlightText(querie.workshop.name, search)}
-                  </p>
-                  <p className="text-sm text-black">Email:</p>
-                  <p className="text-sm text-black font-semibold">
-                    {querie.workshop.email}
-                  </p>
-                  <p className="text-sm text-black">Phone:</p>
-                  <p className="text-sm text-black font-semibold">
-                    {querie.workshop.phone_number}
+                    {querie.scans.map((item, index, arr) => (
+                      <span key={index}>
+                        {highlightText(item.dtc_code, search)}{index < arr.length - 1 && ", "}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </div>

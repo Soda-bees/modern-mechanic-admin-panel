@@ -4,15 +4,20 @@ import PageHeader from "@/component/PageHeader";
 import Image from "next/image";
 import images from "@/services/images";
 import { customImageLoader } from "@/lib/imageLoader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ScanBarChart from "@/component/BarChart";
 import LineChartComponent from "@/component/LineChart";
-import { useAppSelector } from "@/lib/hooks";
-import { selectAdminData } from "@/lib/features/adminData/adminDataSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchAllAdminData, selectAdminData, selectIsAnyLoading } from "@/lib/features/adminData/adminDataSlice";
+import { useSearch } from "@/context/SearchContext";
 
 export default function Overview() {
-  const { users, scans, complaints, workshops } =
-    useAppSelector(selectAdminData);
+
+  const dispatch = useAppDispatch()  
+
+  const { users, scans, complaints, workshops } = useAppSelector(selectAdminData);
+
+  const loading = useAppSelector(selectIsAnyLoading)
 
   const [summaryCards, setSummaryCards] = useState([
     {
@@ -41,9 +46,15 @@ export default function Overview() {
     },
   ]);
 
+  const getSummary = async () => {
+    if (!loading) {
+      dispatch(fetchAllAdminData());
+    }
+  }
+
   return (
     <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
-      <PageHeader title="Overview" showFilter-={false} />
+      <PageHeader title="Overview" showReload isLoading={loading} onReloadClick={getSummary} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         {summaryCards.map((item, i) => (

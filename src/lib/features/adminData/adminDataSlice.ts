@@ -9,7 +9,7 @@ export const fetchAllAdminData = createAsyncThunk<
         'adminData/fetchAll',
         async (_, { rejectWithValue }) => {
             try {
-                const response = await handleGetSummary()
+                const response = await handleGetSummary()                   
                 return response?.data as GetAllSummaryResponse;
             } catch (error) {
                 if (error instanceof Error) {
@@ -187,6 +187,13 @@ export const selectLoadings = createSelector([
     loadingUser, loadingScan, loadingComplaint, loadingWorkshop, loadingQuery
 }))
 
+export const selectIsAnyLoading = (state: RootState) =>
+    state.adminData.users.loading ||
+    state.adminData.scans.loading ||
+    state.adminData.complaints.loading ||
+    state.adminData.workshops.loading ||
+    state.adminData.queries.loading;
+
 export const fetchUsers = createFetchThunk<User, GetAllUserResponse>('Users', handleGetAllUser, (res) => res.data);
 export const fetchScans = createFetchThunk<Scan, GetAllScanResponse>('scans', handleScanResult, (res) => res.data);
 export const fetchComplaints = createFetchThunk<Complaint, GetAllComplaintsResponse>('Complaints', handleComplaints, (res) => res.data);
@@ -194,14 +201,6 @@ export const fetchWorkshops = createFetchThunk<IWorkshop, getAllWorkshopResponse
 export const fetchQueries = createFetchThunk<Queries, GetQueriesResponse>('Queries', handleQueries, (res) => res.queries);
 
 type AdminKeys = keyof AdminDataState;
-
-// const adminThunks: { key: AdminKeys; thunk: any }[] = [
-//     { key: 'users', thunk: fetchUsers },
-//     { key: 'scans', thunk: fetchScans },
-//     { key: 'complaints', thunk: fetchComplaints },
-//     { key: 'workshops', thunk: fetchWorkshops },
-//     { key: 'queries', thunk: fetchQueries },
-// ];
 
 const adminThunks: {
     key: AdminKeys;

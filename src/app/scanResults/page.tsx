@@ -1,7 +1,7 @@
 "use client";
 
 import PageHeader from "@/component/PageHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import images from "@/services/images";
 import Link from "next/link";
 import { useSearch } from "@/context/SearchContext";
@@ -11,8 +11,15 @@ import { fetchScans, selectLoadings, selectScans } from "@/lib/features/adminDat
 
 export default function Scanresults() {
   const { loadingScan } = useAppSelector(selectLoadings)
-  const { search } = useSearch();
+  const { search , setPlaceholder} = useSearch();
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    setPlaceholder('Search scans by DTC Code...');
+    return () => {
+      setPlaceholder("Search..."); 
+    };
+  }, [setPlaceholder ])
 
   const scans = useAppSelector(selectScans)
 
@@ -32,7 +39,7 @@ export default function Scanresults() {
 
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: "yellow" }}>
+        <span key={index} style={{ backgroundColor: "yellow" , fontWeight:'bold' , fontSize:16 , color:'black' }}>
           {part}
         </span>
       ) : (
@@ -47,13 +54,13 @@ export default function Scanresults() {
 
   return (
     <div className="w-full px-4 sm:px-6 py-6">
-      <PageHeader title="Scans" showFilter onFilterClick={getScanResult} isLoading={loadingScan} />
+      <PageHeader title="Scans" showReload onReloadClick={getScanResult} isLoading={loadingScan} />
       {loading ? (
         <div className="mt-6">
           <Loader />
         </div>
       ) : filteredScans.length === 0 ? (
-        <p className="text-center text-gray-500 mt-8">No vehicles found.</p>
+        <p className="text-center text-gray-500 mt-8 text-xl">We couldn’t find any scan results for this DTC code.</p>
       ) : (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredScans.map((scan) => (

@@ -6,15 +6,22 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import { customImageLoader } from "@/lib/imageLoader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "@/component/loader";
 import { useSearch } from "@/context/SearchContext";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchComplaints, selectComplaints, selectLoadings } from "@/lib/features/adminData/adminDataSlice";
 
 export default function Complaints() {
-  const { search } = useSearch();
+  const { search , setPlaceholder } = useSearch();
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    setPlaceholder('Search complaints by DTC Code...');
+    return () => {
+      setPlaceholder("Search..."); 
+    };
+  }, [setPlaceholder ])
 
   const complaints = useAppSelector(selectComplaints)
   const {loadingComplaint} = useAppSelector(selectLoadings)
@@ -35,7 +42,7 @@ export default function Complaints() {
 
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: "yellow" }}>
+        <span key={index} style={{ backgroundColor: "yellow" , fontWeight:'bold' , fontSize:16 , color:'black' }}>
           {part}
         </span>
       ) : (
@@ -52,8 +59,8 @@ export default function Complaints() {
       <div className="w-full px-4 sm:px-6 py-6">
         <PageHeader
           title="Complaints"
-          showFilter
-          onFilterClick={getComplaints}
+          showReload
+          onReloadClick={getComplaints}
           isLoading={loadingComplaint}
         />
         {loading ? (
@@ -61,7 +68,7 @@ export default function Complaints() {
             <Loader />
           </div>
         ) : filteredComplaint.length === 0 ? (
-          <p className="text-center text-gray-500 mt-8">No complaint found.</p>
+          <p className="text-center text-gray-500 mt-8 text-xl">We couldn’t find any complaints for this DTC code.</p>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             {filteredComplaint.map((complaint, index) => (
