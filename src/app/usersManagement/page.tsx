@@ -31,37 +31,15 @@ export default function Usersmanagement() {
     }
   }
 
-  // const highlightText = (text: string, query: string) => {
-  //   if (!query) return text;
+  const highlightText = (text: string, query: string) => {
+    if (!query) return text;
 
-  //   const regex = new RegExp(`(${query})`, "gi");
-  //   const parts = text.split(regex);
-
-  //   return parts.map((part, index) =>
-  //     part.toLowerCase() === query.toLowerCase() ? (
-  //       <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: 16 }}>
-  //         {part}
-  //       </span>
-  //     ) : (
-  //       part
-  //     )
-  //   );
-  // };
-
-  const highlightText = (text: string, queries: string | string[]) => {
-    if (!queries || (Array.isArray(queries) && queries.length === 0)) return text;
-
-    const list = Array.isArray(queries) ? queries : [queries];
-    const regex = new RegExp(`(${list.join("|")})`, "gi");
-
-    const parts = String(text).split(regex);
+    const regex = new RegExp(`(${query})`, "gi");
+    const parts = text.split(regex);
 
     return parts.map((part, index) =>
-      list.some((q) => part.toLowerCase() === q.toLowerCase()) ? (
-        <span
-          key={index}
-          style={{ backgroundColor: "yellow", fontWeight: "bold", fontSize: 16 }}
-        >
+      part.toLowerCase() === query.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: 16 }}>
           {part}
         </span>
       ) : (
@@ -70,29 +48,33 @@ export default function Usersmanagement() {
     );
   };
 
-
-  // const filteredUser = users.filter((user) =>
-  //   user.user_name.toLowerCase().includes(search.toLowerCase())
-  // );
-
+  const highlightFilters = (text: string, zips: string[]) => {
+    if (!zips.length) return text;
+    const regex = new RegExp(`(${zips.join("|")})`, "gi");
+    return String(text).split(regex).map((part, i) =>
+      zips.some((z) => part.toLowerCase() === z.toLowerCase()) ? (
+        <span key={i} style={{ backgroundColor: "yellow", fontWeight: "bold" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
 
   const filteredUser = users.filter((user) => {
+    // search only by user_name
     const nameMatch = (user.user_name || "")
       .toLowerCase()
       .includes(search.toLowerCase());
-
-    const zipMatch = String(user.zip_code || "")
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    // check against selected zips
+  
+    // zip filtering only from selectedZips (not search input)
     const userZip = String(user.zip_code || "");
     const zipSelected =
       selectedZips.length === 0 || selectedZips.includes(userZip);
-
-    return (nameMatch || zipMatch) && zipSelected;
+  
+    return nameMatch && zipSelected;
   });
-
   return (
     <div className="w-full px-4 sm:px-6 py-6">
       <PageHeader
@@ -131,7 +113,7 @@ export default function Usersmanagement() {
                         highlightText(user.user_name, search)
                       }</td>
                       <td className="px-4 py-4">{user.email}</td>
-                      <td className="px-4 py-4">  {highlightText(user.zip_code, selectedZips)}</td>
+                      <td className="px-4 py-4">  {highlightFilters(user.zip_code, selectedZips)}</td>
                       <td className="px-4 py-4">
                         {String(user.cars.length).padStart(2, "0")}
                       </td>
@@ -148,20 +130,22 @@ export default function Usersmanagement() {
             </div>
 
             <div className="md:hidden space-y-4">
-              {users.map((user) => (
+              {filteredUser.map((user) => (
                 <div
                   key={user.id}
                   className="bg-white rounded-xl shadow-sm p-4 text-sm text-gray-800"
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <div className="font-semibold text-base">{user.user_name}</div>
+                    <div className="font-semibold text-base">{
+                        highlightText(user.user_name, search)
+                      }</div>
                   </div>
                   <div className="text-gray-600 text-sm mb-1">
                     {user.email}
                   </div>
                   <div className="grid grid-cols-2 gap-y-1 text-sm">
                     <div>
-                      <span className="text-gray-500">Zip:</span> {user.zip_code}
+                      <span className="text-gray-500">Zip:</span> {highlightFilters(user.zip_code, selectedZips)}
                     </div>
                     <div>
                       <span className="text-gray-500">Vehicles:</span>{" "}

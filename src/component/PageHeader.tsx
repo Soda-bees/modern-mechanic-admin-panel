@@ -65,16 +65,6 @@ const PageHeader = ({
         )}
       </div>
 
-      {/* {showFilter && (
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-cenetr justify-center cursor-pointer">
-          <AdjustmentsHorizontalIcon className={`w-5 mr-1 mb-1`} />
-          <div className="text-xl font-semibold">Filter</div>
-        </motion.button>
-      )} */}
-
       {showFilter && (
         <div className="relative">
           <motion.button
@@ -102,7 +92,7 @@ const PageHeader = ({
               {/* filter popup */}
               <div className="absolute right-0 mt-2 w-68 bg-white rounded-lg shadow-lg p-4 z-50">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold">Filter Users</h2>
+                  <h2 className="text-lg font-semibold">Filter</h2>
                   <motion.button
                     onClick={() => setIsFilterOpen(false)}
                     whileHover={{ scale: 1.05 }}
@@ -114,6 +104,7 @@ const PageHeader = ({
                 </div>
 
                 {/* zipcode chips */}
+                <div className="mb-2 border-b border-darkGrey">Zipcode</div>
                 <div className="flex flex-wrap gap-2">
                   {zipcodes.map((zip) => {
                     const zipStr = String(zip); // ✅ ensure always string
@@ -143,7 +134,7 @@ const PageHeader = ({
                         }}
                         className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 w-full cursor-pointer mt-6"
                       >
-                        Reset
+                        Reset Filters
                       </button>
                     )
                   }
@@ -154,7 +145,6 @@ const PageHeader = ({
 
         </div>
       )}
-
     </div>
   );
 };

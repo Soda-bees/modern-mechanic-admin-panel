@@ -22,7 +22,7 @@ export default function Workshops() {
   const { search, setPlaceholder } = useSearch()
 
   useEffect(() => {
-    setPlaceholder('Search workshops by name or zip code...');
+    setPlaceholder('Search workshops by name...');
     return () => {
       setPlaceholder("Search...");
     };
@@ -30,6 +30,8 @@ export default function Workshops() {
 
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(false)
+  const [selectedZips, setSelectedZips] = useState<string[]>([]);
+  const uniqueZipcodes = Array.from(new Set(workshops.map((w) => w.zipcode)));
 
   const value = searchParams.get('modal')
 
@@ -45,7 +47,7 @@ export default function Workshops() {
     }
   }
 
-  const highlightText = (text: string, query: string, fontSize: number) => {
+  const highlightText = (text: string, query: string) => {
     if (!query) return text;
 
     const regex = new RegExp(`(${query})`, "gi");
@@ -53,7 +55,7 @@ export default function Workshops() {
 
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: fontSize, color: 'black' }}>
+        <span key={index} style={{ backgroundColor: "yellow", fontWeight: 'bold', fontSize: 21 }}>
           {part}
         </span>
       ) : (
@@ -62,10 +64,34 @@ export default function Workshops() {
     );
   };
 
-  const filteredWorkshop = workshops.filter((workshop) =>
-    workshop.zipcode.toLowerCase().includes(search.toLowerCase()) ||
-    workshop.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const highlightFilters = (text: string, zips: string[]) => {
+    if (!zips.length) return text;
+    const regex = new RegExp(`(${zips.join("|")})`, "gi");
+    return String(text).split(regex).map((part, i) =>
+      zips.some((z) => part.toLowerCase() === z.toLowerCase()) ? (
+        <span key={i} style={{ backgroundColor: "yellow", fontWeight: "bold" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
+  const filteredWorkshop = workshops.filter((workshop) => {
+    // search only by name
+    const nameMatch = (workshop.name || "")
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  
+    // zip filtering only from selectedZips
+    const workshopZip = String(workshop.zipcode || "");
+    const zipSelected =
+      selectedZips.length === 0 || selectedZips.includes(workshopZip);
+  
+    return nameMatch && zipSelected;
+  });
+  
 
   const handleOpenModal = async () => {
     router.push("?modal=add");
@@ -75,12 +101,15 @@ export default function Workshops() {
     <div className="w-full px-4 sm:px-6 py-6">
       <PageHeader
         title="Workshops"
-        showReload
+        showReload showFilter
         addShowButton
         buttonTitle="+ Add Workshop"
         onAddShowClick={handleOpenModal}
         isLoading={loadingWorkshop}
         onReloadClick={getWorkshop}
+        zipcodes={uniqueZipcodes}
+        selectedZips={selectedZips}
+        onZipSelect={setSelectedZips}
       />
       <div className="mt-6">
         {loading ? (
@@ -104,7 +133,7 @@ export default function Workshops() {
                     />
                   </div>
                   <h3 className="mt-2 text-base sm:text-lg font-semibold text-black truncate">
-                    {highlightText(shop.name, search , 21)}
+                    {highlightText(shop.name, search)}
                     {/* {shop.name} */}
                   </h3>
                   <p className="text-xs sm:text-sm text-black mt-1 font-semibold truncate">
@@ -115,7 +144,7 @@ export default function Workshops() {
                   </p>
                   <p className="text-xs sm:text-sm text-black mb-3 font-semibold truncate">
                     <span className="font-medium">Zipcode:</span>
-                    {highlightText(shop.zipcode, search , 17)}
+                    {highlightFilters(shop.zipcode, selectedZips)}
                   </p>
                   <Link href={`/workshops/${shop.id}`}>
                     <p className="text-black bg-white rounded-xl w-full py-3 text-xs sm:text-sm hover:bg-headerBG transition font-semibold flex justify-center">
